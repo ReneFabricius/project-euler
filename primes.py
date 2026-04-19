@@ -371,3 +371,55 @@ def all_decompositions_preinitialized_initializing(n):
         changed = change_pick(RS, CHS)
 
     return RES
+
+def find_divisors_range(l):
+    """
+    Find divisors for all numbers in range [1, l]
+    """
+    decomps = rangePrimeFactDecomposition(l)
+    
+    def _compute_divisors(n):
+        if n == 0:
+            return []
+        if n == 1:
+            return [1]
+        
+        dec = decomps[n]
+        divs = [1]
+        pris = [p for p in dec]
+        max_pows = [dec[p] for p in pris]
+        cur_pows = [0 for p in pris]
+        def _incr():
+            nonlocal cur_pows
+            cur_ind = len(cur_pows) - 1
+            while cur_pows[cur_ind] == max_pows[cur_ind]:
+                cur_ind -= 1
+                if cur_ind < 0:
+                    return False
+            
+            cur_pows[cur_ind] += 1
+            for zero_ind in range(cur_ind + 1, len(cur_pows)):
+                cur_pows[zero_ind] = 0
+            return True
+        
+        while _incr():
+            divs.append(prod([pris[i]**cur_pows[i] for i in range(len(cur_pows))]))
+        
+        return sorted(divs)
+    
+    divisors = [_compute_divisors(n) for n in range(l)]
+    return divisors
+
+
+def find_divisors_range_simple(l):
+    """
+    Simpler and faster version.
+    """
+    divisors = [[]] + [[1] for _ in range(1, l)]
+    for d in range(2, l):
+        if d < 100 or (d < 1000 and d % 100 == 0) or (d < 10000 and d % 1000 == 0) or (d < 100000 and d % 10000 == 0) or d % 100000 == 0:
+            print(f"Applying d: {d}")
+        for mult in range(d, l, d):
+            divisors[mult].append(d)
+    
+    return divisors
