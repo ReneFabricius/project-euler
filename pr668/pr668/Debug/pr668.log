@@ -1,0 +1,5 @@
+﻿  pr668.cpp
+g:\euler\pr668\pr668\pr668.cpp(29): warning C4018: '<': signed/unsigned mismatch
+Debug\pr668.obj : warning LNK4042: object specified more than once; extras ignored
+  pr668.vcxproj -> G:\Euler\pr668\pr668\Debug\pr668.exe
+  pr668.vcxproj -> G:\Euler\pr668\pr668\Debug\pr668.pdb (Partial PDB)
