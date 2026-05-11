@@ -22,7 +22,9 @@ class Numbers(object):
                 if self.cur_i_ < 0:
                     raise StopIteration()
 
-                cdi = list(self.cntrs_[self.cur_i_].keys()).index(self.number_[self.cur_i_])
+                cdi = list(self.cntrs_[self.cur_i_].keys()).index(
+                    self.number_[self.cur_i_]
+                )
                 if cdi < len(self.cntrs_[self.cur_i_]) - 1:
                     self.going_up_ = False
                     continue
@@ -36,7 +38,9 @@ class Numbers(object):
                 if self.number_[self.cur_i_] is None:
                     dts = list(self.cntrs_[self.cur_i_].keys())[0]
                 else:
-                    cdi = list(self.cntrs_[self.cur_i_].keys()).index(self.number_[self.cur_i_])
+                    cdi = list(self.cntrs_[self.cur_i_].keys()).index(
+                        self.number_[self.cur_i_]
+                    )
                     if cdi < len(self.cntrs_[self.cur_i_]) - 1:
                         dts = list(self.cntrs_[self.cur_i_].keys())[cdi + 1]
                     else:
@@ -65,7 +69,9 @@ class Numbers(object):
                             print("aaa")
                         count /= factorial(fin_cntr[rd])
 
-                    return sum([d * 10**i for i, d in enumerate(self.number_)]), int(count)
+                    return sum([d * 10**i for i, d in enumerate(self.number_)]), int(
+                        count
+                    )
 
 
 class Digits(object):
@@ -83,10 +89,10 @@ class Digits(object):
     def __fill_from__(self, ind, max_d):
         cur_d = max_d
         for i in range(ind, self.n_dig_):
-            while cur_d ** 2 > self.rem_:
+            while cur_d**2 > self.rem_:
                 cur_d -= 1
             self.digs_[i] = cur_d
-            self.rem_ -= cur_d ** 2
+            self.rem_ -= cur_d**2
 
     def __make_step__(self):
         i = self.n_dig_ - 1
@@ -170,7 +176,6 @@ def pr171(dig):
     return res
 
 
-
 def digits(nd, tar):
     S = set()
     for i in range(10**nd):
@@ -191,9 +196,9 @@ def digits(nd, tar):
 
 
 def pr171_1(dig):
-    max_sum = dig * 9 ** 2
+    max_sum = dig * 9**2
     res_digs = 6
-    mod = 10 ** res_digs
+    mod = 10**res_digs
     rem_dig = dig - res_digs
     rem_fact = factorial(rem_dig)
     res = 0
@@ -230,15 +235,16 @@ def pr171_1(dig):
 
     return res
 
+
 def pr171_2(dig):
-    max_sum = dig * 9 ** 2
+    max_sum = dig * 9**2
     res_digs = 6
-    mod = 10 ** res_digs
+    mod = 10**res_digs
     rem_dig = dig - res_digs
     rem_fact = factorial(rem_dig)
     dig_ones = sum([10**i for i in range(res_digs)])
     res = 0
-    pos_tars = [i ** 2 for i in range(int(sqrt(max_sum)) + 1)]
+    pos_tars = [i**2 for i in range(int(sqrt(max_sum)) + 1)]
 
     for digs in AllDigits(res_digs):
         sqs = sum([d**2 for d in digs])
@@ -267,7 +273,7 @@ def pr171_2(dig):
                 else:
                     plfc //= factorial(ctr[l])
 
-            digs_sum += dig_ones*k*plfc
+            digs_sum += dig_ones * k * plfc
 
         res += count * digs_sum
         res %= mod
@@ -276,18 +282,18 @@ def pr171_2(dig):
 
 
 def pr171_3(dig):
-    max_sum = dig * 9 ** 2
+    max_sum = dig * 9**2
     res_digs = 9
-    mod = 10 ** res_digs
+    mod = 10**res_digs
     rem_dig = dig - res_digs
     rem_fact = factorial(rem_dig)
-    dig_ones = sum([10 ** i for i in range(res_digs)])
+    dig_ones = sum([10**i for i in range(res_digs)])
     res = 0
-    pos_tars = [i ** 2 for i in range(int(sqrt(max_sum)) + 1)]
+    pos_tars = [i**2 for i in range(int(sqrt(max_sum)) + 1)]
     rem_counts = {}
 
     for digs in AllDigits(res_digs):
-        sqs = sum([d ** 2 for d in digs])
+        sqs = sum([d**2 for d in digs])
         count = 0
         for pt in pos_tars:
             rem = pt - sqs

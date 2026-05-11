@@ -19,14 +19,14 @@ def mod_tot(m, PL):
             ch <<= 1
             ind += 1
 
-        c += (-1 if pos_count & 1 else 1)*int(cur_num)
+        c += (-1 if pos_count & 1 else 1) * int(cur_num)
         mask += 1
 
     return c
 
 
 def pr634(n):
-    b_lim = int((n/4)**(1/3)) + 1
+    b_lim = int((n / 4) ** (1 / 3)) + 1
     DEC = primes.rangePrimeFactDecomposition(b_lim)
     c = 0
 
@@ -41,7 +41,7 @@ def pr634(n):
                 PS.append(p)
 
         if val:
-            sq_bases = int((n/b**3)**(1/2))
+            sq_bases = int((n / b**3) ** (1 / 2))
             fitting_c = mod_tot(sq_bases, PS) - 1
             c += fitting_c
 

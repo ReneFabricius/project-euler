@@ -5,7 +5,8 @@ def problem76(n):
             W[s] += W[s - mN]
             if s - mN <= mN:
                 W[s] += 1
-    
+
     return W[n]
+
 
 # PDF k problemu 31

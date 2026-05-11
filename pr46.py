@@ -1,6 +1,7 @@
 from math import sqrt
 from primes import primes, primesRang
 
+
 def problem46():
     l = 10000
     P = primes(l)
@@ -9,11 +10,11 @@ def problem46():
     i = 9
     while True:
         if i > l:
-            Pn = primesRang(l + 1, 2*l)
+            Pn = primesRang(l + 1, 2 * l)
             P += Pn
             PS = set(P)
             l *= 2
-        
+
         if i not in PS:
             g = False
             for p in P:
@@ -22,9 +23,8 @@ def problem46():
                 if sqrt((i - p) // 2) % 1 == 0:
                     g = True
                     break
-            
+
             if not g:
                 return i
-        
+
         i += 2
-            

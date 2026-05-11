@@ -16,7 +16,7 @@ def pr196(S):
 
 
 def has_p_neighbor(num, exc):
-    row = int((1 + math.sqrt(1 + 8*(num - 1))) / 2)
+    row = int((1 + math.sqrt(1 + 8 * (num - 1))) / 2)
     r_start = row * (row - 1) // 2 + 1
     r_end = r_start + row - 1
     above = num - row + 1
@@ -27,7 +27,16 @@ def has_p_neighbor(num, exc):
     elif num == r_end:
         neighbs = [above - 1, num - 1, below - 1, below, below + 1]
     else:
-        neighbs = [above - 1, above, above + 1, num - 1, num + 1, below - 1, below, below + 1]
+        neighbs = [
+            above - 1,
+            above,
+            above + 1,
+            num - 1,
+            num + 1,
+            below - 1,
+            below,
+            below + 1,
+        ]
 
     p_neighbs = []
     for n in neighbs:

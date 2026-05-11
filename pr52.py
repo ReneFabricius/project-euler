@@ -1,5 +1,6 @@
 from collections import Counter
 
+
 def getSetOfDigits(n):
     S = Counter()
     while n:
@@ -7,11 +8,12 @@ def getSetOfDigits(n):
         n //= 10
     return S
 
+
 def findPerm():
     i = 1
     while True:
         D = getSetOfDigits(i)
-        for j in range (2, 7):
+        for j in range(2, 7):
             S = getSetOfDigits(j * i)
             if D != S:
                 break

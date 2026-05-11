@@ -12,8 +12,8 @@ def problem92(l):
                 break
             nsq = 0
             while sq:
-                nsq += (sq % 10)*(sq % 10)
+                nsq += (sq % 10) * (sq % 10)
                 sq //= 10
             sq = nsq
-    
+
     return len(E89)

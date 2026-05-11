@@ -1,5 +1,6 @@
 from math import factorial
 
+
 def sumDigitsFact100():
     f = factorial(100)
     D = []

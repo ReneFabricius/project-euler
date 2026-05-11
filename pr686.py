@@ -1,5 +1,5 @@
-
 import math
+
 
 def pr686(L, n):
     count = 0
@@ -43,8 +43,8 @@ def pr686_fast(L, n):
     ln10 = math.log(10)
 
     while count < n:
-        exp = math.ceil(l2p + i*l210)
-        if ln2*exp < lnp1 + i*ln10:
+        exp = math.ceil(l2p + i * l210)
+        if ln2 * exp < lnp1 + i * ln10:
             count += 1
             last_exp = exp
 
@@ -61,12 +61,12 @@ def ugly_hack(n):
     DS = [196, 289]
     while count < n:
         can0 = cur_n << DS[0]
-        if can0 // (10**((int)(math.log10(can0)) - 2)) == des:
+        if can0 // (10 ** ((int)(math.log10(can0)) - 2)) == des:
             cur_p += DS[0]
             cur_n = can0
         else:
             can1 = cur_n << DS[1]
-            if can1 // (10**((int)(math.log10(can1)) - 2)) == des:
+            if can1 // (10 ** ((int)(math.log10(can1)) - 2)) == des:
                 cur_p += DS[1]
                 cur_n = can1
             else:

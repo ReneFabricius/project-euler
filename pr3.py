@@ -1,7 +1,7 @@
-from math import sqrt
-from primes import primeFactDecomp
+from primes import prime_fact_decomp
+
 
 def largestPFact(n):
-	D = primeFactDecomp(n)
-			
-	return D[-1]
+    D = prime_fact_decomp(n)
+
+    return D[-1]

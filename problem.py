@@ -1,4 +1,4 @@
-from primes import primeFactDecomp
+from primes import prime_fact_decomp
 from gmpy2 import mpq
 from itertools import combinations
 
@@ -6,7 +6,7 @@ from itertools import combinations
 def createAdepts(l):
     A = {}
     for n in range(2, l + 1):
-        D = primeFactDecomp(n)
+        D = prime_fact_decomp(n)
         a = True
         for p in D.keys():
             if p != 2:
@@ -42,7 +42,7 @@ def createPartialSums(A):
     for a in A:
         ss = 0
         for av in list(A.keys())[i:]:
-            ss += 1 / av ** 2
+            ss += 1 / av**2
         S[a] = ss
         i += 1
 
@@ -69,7 +69,6 @@ def problem152(l):
             return
 
         if len(req) > 0:
-
             rq = req[0]
             pw = 1
             while rq in N:
@@ -97,7 +96,13 @@ def problem152(l):
                                 else:
                                     nreq.append(ppw)
 
-                        findSols(cs + 1 / mul ** 2, csol + [mul], set(nav), list(nreq), set(npres))
+                        findSols(
+                            cs + 1 / mul**2,
+                            csol + [mul],
+                            set(nav),
+                            list(nreq),
+                            set(npres),
+                        )
 
                 rq *= rq
                 pw += 1
@@ -126,7 +131,9 @@ def problem152(l):
                         nreq.append(ppw)
 
                 nav.remove(aval)
-                findSols(cs + 1 / aval ** 2, csol + [aval], set(nav), list(nreq), set(npres))
+                findSols(
+                    cs + 1 / aval**2, csol + [aval], set(nav), list(nreq), set(npres)
+                )
 
     findSols(1 / 4 + 1 / 9, [2, 3], set(list(A.keys())[2:]), [2, 3], set())
 
@@ -158,7 +165,7 @@ def findGroups(l):
         pw = A[k][list(A[k].keys())[0]]
 
         for nu in N[k]:
-            LA += [tuple([mpq(1, nu ** 2), set([nu])])]
+            LA += [tuple([mpq(1, nu**2), set([nu])])]
 
         k2 = k * list(A[k].keys())[0]
         while k2 in N:
@@ -180,9 +187,9 @@ def findGroups(l):
             if k == 2:
                 su = mpq(1, 4)
 
-            found = bi.find('1')
+            found = bi.find("1")
             if found < len(bi) - 1:
-                rest = int(bi[found + 1:], 2)
+                rest = int(bi[found + 1 :], 2)
                 su += Cache[rest]
             su += LA[found - len(bi)][0]
 
@@ -195,11 +202,14 @@ def findGroups(l):
             base = list(A[k].keys())[0]
 
             while cur_pw >= 0:
-                if su.denominator % (base ** (cur_pw + 1)) != 0 and su.denominator % (base ** cur_pw) == 0:
+                if (
+                    su.denominator % (base ** (cur_pw + 1)) != 0
+                    and su.denominator % (base**cur_pw) == 0
+                ):
                     st = set()
                     ind = -1
                     for b in bi[::-1]:
-                        if b == '1':
+                        if b == "1":
                             st = st | LA[ind][1]
                         ind -= 1
 
@@ -216,7 +226,6 @@ def findGroups(l):
 def find93(G, A):
     to_be_avoided = set([9, 18, 72])
     for sol in G[3][0]:
-        Found = False
         for e in sol[1]:
             if 3 in A[e] and A[e][3] == 2:
                 if len(sol[1] & to_be_avoided) == 0:
@@ -250,8 +259,18 @@ def buildCombinations(G, A):
                     if (potential_addition[1] & must_be_incl) == must_be_incl:
                         addible = True
                         for pot_add in potential_addition[1] - must_be_incl:
-                            if len(set(
-                                    [pot_add_p ** A[pot_add][pot_add_p] for pot_add_p in A[pot_add]]) & resolved) > 0:
+                            if (
+                                len(
+                                    set(
+                                        [
+                                            pot_add_p ** A[pot_add][pot_add_p]
+                                            for pot_add_p in A[pot_add]
+                                        ]
+                                    )
+                                    & resolved
+                                )
+                                > 0
+                            ):
                                 addible = False
                                 break
 
@@ -290,7 +309,7 @@ def buildCombinations(G, A):
         if feasible:
             tryBuildGroup(sol4[1], set([3]))
 
-        '''tryBuildGroup(sol4[1], set())'''
+        """tryBuildGroup(sol4[1], set())"""
 
     return Groups
 
@@ -339,14 +358,18 @@ def buildCombinations_n(G, A):
 
 
 def testCombinations(GR):
-    potential_additions = [tuple([mpq(0, 1), set()]), tuple([mpq(1, 4 ** 2), set([4])]),
-                           tuple([mpq(1, 8 ** 2), set([8])]), tuple([mpq(1, 4 ** 2) + mpq(1, 8 ** 2), set([4, 8])])]
+    potential_additions = [
+        tuple([mpq(0, 1), set()]),
+        tuple([mpq(1, 4**2), set([4])]),
+        tuple([mpq(1, 8**2), set([8])]),
+        tuple([mpq(1, 4**2) + mpq(1, 8**2), set([4, 8])]),
+    ]
     GRf = []
 
     for gr in GR:
         sm = mpq(1, 4)
         for mem in gr:
-            sm += mpq(1, mem ** 2)
+            sm += mpq(1, mem**2)
 
         for pot_add in potential_additions:
             if sm + pot_add[0] == mpq(1, 2):
@@ -362,13 +385,13 @@ def testCombinations_n(GR):
     for gr in GR:
         sm = mpq(1, 4)
         for mem in gr:
-            sm += mpq(1, mem ** 2)
+            sm += mpq(1, mem**2)
 
         for pot_add_len in range(len(potential_additions) + 1):
             for pot_add in combinations(potential_additions, pot_add_len):
                 pot_add_frac = mpq(0, 1)
                 for add_elem in pot_add:
-                    pot_add_frac += mpq(1, add_elem ** 2)
+                    pot_add_frac += mpq(1, add_elem**2)
 
                 if sm + pot_add_frac == mpq(1, 2):
                     GRf.append(gr | set(pot_add) | set([2]))
@@ -392,8 +415,4 @@ def problem152_n_n(l):
     return tryFilterDuplicates(testCombinations_n(buildCombinations_n(*findGroups(l))))
 
 
-
 GR = problem152n(80)
-
-
-

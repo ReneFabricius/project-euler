@@ -1,6 +1,7 @@
 from math import sqrt
 import primes
 
+
 def problem58(pb):
     up = 10**12
     primes.initGlobalPrimes(10**6)
@@ -12,7 +13,7 @@ def problem58(pb):
         for i in range(4):
             x += l - 1
             if x > up:
-                primes.initGlobalPrimes(sqrt(up*100))
+                primes.initGlobalPrimes(sqrt(up * 100))
                 up *= 100
             c += 1
             if primes.isPrimePreinitialised(x):

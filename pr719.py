@@ -7,7 +7,7 @@ def substrsum(divs, digs, tens):
     for i, d in enumerate(divs + [len(digs)]):
         m = 0
         for di in range(d - 1, divs[i - 1] - 1 if i > 0 else -1, -1):
-            ps += tens[m]*digs[di]
+            ps += tens[m] * digs[di]
             m += 1
 
     return ps
@@ -37,9 +37,9 @@ def pr719(N):
     L = int(math.sqrt(N)) + 1
     tens = [int(10**i) for i in range(int(math.log10(N)) + 2)]
     for i in range(L):
-        n = i*i
-        if i % (L//100) == 0:
-            print(i / (L//100))
+        n = i * i
+        if i % (L // 100) == 0:
+            print(i / (L // 100))
 
         ndigs = []
         n_temp = n
@@ -49,7 +49,7 @@ def pr719(N):
 
         ndigs.reverse()
         mnd = len(ndigs)
-        while 9*(mnd - 1) + 10**(len(ndigs) - mnd + 1) - 1 < i:
+        while 9 * (mnd - 1) + 10 ** (len(ndigs) - mnd + 1) - 1 < i:
             mnd -= 1
 
         found = False
@@ -59,7 +59,7 @@ def pr719(N):
             div = [k for k in range(1, nd + 1)]
             cont = True
             while cont:
-                '''
+                """
                 if int(sn[:div[0]]) > i:
                     break
 
@@ -77,7 +77,7 @@ def pr719(N):
 
                 if not cont:
                     break
-                '''
+                """
 
                 ps = substrsum(div, ndigs, tens)
 

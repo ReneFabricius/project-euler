@@ -1,8 +1,9 @@
 from functools import reduce
 
+
 def importMatrix(fn, w, h):
     M = [[0 for x in range(w)] for y in range(h)]
-    f = open(fn, 'r')
+    f = open(fn, "r")
     y = 0
     for line in f:
         cL = line.split(" ")
@@ -12,7 +13,10 @@ def importMatrix(fn, w, h):
     f.close()
     return M
 
-prod = lambda L: reduce(lambda x, y: x*y, L, 1)
+
+def prod_pw(L):
+    return reduce(lambda x, y: x * y, L, 1)
+
 
 def findLargstProd():
     w, h = 20, 20
@@ -20,41 +24,50 @@ def findLargstProd():
     m = 0
     d = 0
     mx, my = 0, 0
-                
+
     for y in range(len(M)):
         for x in range(len(M[0])):
             if x + 3 < w:
-                p = prod([y][x:x + 3])
-                if (p > m):
+                p = prod_pw([y][x : x + 3])
+                if p > m:
                     m = p
                     d = "horizontalne"
                     mx, my = h, y
-                
+
             if y + 3 < h:
                 p = 1
                 for i in range(4):
                     p *= M[y + i][x]
-                if (p > m):
+                if p > m:
                     m = p
                     d = "vertikalne"
                     mx, my = x, h
-            
+
             if x + 3 < w and y + 3 < h:
                 p = 1
                 for i in range(4):
                     p *= M[y + i][x + i]
-                if (p > m):
+                if p > m:
                     m = p
                     d = "diagonalne vpravo dole"
                     mx, my = x, y
-            
+
             if x - 3 >= 0 and y + 3 < h:
                 p = 1
                 for i in range(4):
                     p *= M[y + i][x - i]
-                if (p > m):
+                if p > m:
                     m = p
                     d = "diagonalne vlavo dole"
                     mx, my = x, y
-                
-    return "Maximalny produkt: " + str(m) + " Z x: " + str(mx) + ", y: " + str(my) + " " + d
+
+    return (
+        "Maximalny produkt: "
+        + str(m)
+        + " Z x: "
+        + str(mx)
+        + ", y: "
+        + str(my)
+        + " "
+        + d
+    )

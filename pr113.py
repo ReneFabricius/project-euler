@@ -1,6 +1,6 @@
 def countNonBouncyBel(e):
-    D_p = [1]*10
-    I_p = [1]*9
+    D_p = [1] * 10
+    I_p = [1] * 9
     s = 0
     for i in range(e - 1):
         I = []
@@ -8,14 +8,15 @@ def countNonBouncyBel(e):
             I += [sum(I_p[j::])]
         s += sum(I)
         I_p = I
-        
+
         D = []
         for k in range(10):
             D += [sum(D_p[k::])]
         s += sum(D) - 10
         D_p = D
-    
+
     return s + 9
+
 
 def isBouncy(n):
     i = False
@@ -34,13 +35,14 @@ def isBouncy(n):
                 return True
             i = True
         ldig = dig
-    
+
     return False
-    
+
+
 def countNonBouncyBelSimul(e):
     c = 0
     for nbr in range(1, 10**e):
         if not isBouncy(nbr):
             c += 1
-    
+
     return c

@@ -4,15 +4,15 @@ from primes import primes, isPrimeMillerRabin
 def squbes_frm_prms(put):
     P = primes(put)
     SQ = []
-    last_sq = P[0]**3*P[-1]**2
+    last_sq = P[0] ** 3 * P[-1] ** 2
     for i in range(len(P)):
         for j in range(i + 1, len(P)):
-            sq1 = P[i]**3*P[j]**2
+            sq1 = P[i] ** 3 * P[j] ** 2
             if sq1 > last_sq:
                 break
 
             SQ.append(sq1)
-            sq2 = P[i]**2*P[j]**3
+            sq2 = P[i] ** 2 * P[j] ** 3
             if sq2 <= last_sq:
                 SQ.append(sq2)
 
@@ -27,7 +27,7 @@ def is_p_proof(num):
         for i in range(10):
             str_m = str_n.copy()
             str_m[di] = i
-            nnum = int(''.join([str(oo) for oo in str_m]))
+            nnum = int("".join([str(oo) for oo in str_m]))
             if isPrimeMillerRabin(nnum, k):
                 return False
 
@@ -36,7 +36,7 @@ def is_p_proof(num):
 
 def pr200(k):
     ps = 1000
-    fstr = '200'
+    fstr = "200"
     PPSQS = []
     last_instpected = None
     while True:
@@ -47,7 +47,7 @@ def pr200(k):
         if last_instpected is not None:
             ind = SQ.index(last_instpected)
             print("Continuing from index {}".format(ind + 1))
-            SQ = SQ[ind + 1:]
+            SQ = SQ[ind + 1 :]
 
         print("Squbes to inspect {}".format(len(SQ)))
         last_instpected = SQ[-1]
@@ -61,7 +61,6 @@ def pr200(k):
 
         ps *= 10
 
+
 if __name__ == "__main__":
     pr200(50)
-
-

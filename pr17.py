@@ -1,5 +1,6 @@
 import inflect
 
+
 def numberLetterCount(l):
     N = range(1, l + 1)
     p = inflect.engine()
@@ -7,7 +8,7 @@ def numberLetterCount(l):
     c = 0
     for w in W:
         for ch in w:
-            if ch != ' ' and ch != '-':
+            if ch != " " and ch != "-":
                 c += 1
-                
+
     return c

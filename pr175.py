@@ -1,7 +1,8 @@
-from euclidean_alg import extEuclid
+from euclidean_alg import ext_euclid
+
 
 def pr175(a, b):
-    gcd = extEuclid(a, b)[0]
+    gcd = ext_euclid(a, b)[0]
     a, b = b // gcd, a // gcd
 
     path = []
@@ -18,14 +19,14 @@ def pr175(a, b):
     for i in range(len(path)):
         pos = 2 * pos + path[len(path) - i - 1]
 
-    n = 2 ** level + pos
+    n = 2**level + pos
 
     return n, SBE(n)
 
 
 def SBE(n):
     bn = bin(n)[2:]
-    cs = '1'
+    cs = "1"
     exp = []
     i = 0
     while i < len(bn):
@@ -34,10 +35,10 @@ def SBE(n):
             c += 1
             i += 1
 
-        if cs == '1':
-            cs = '0'
+        if cs == "1":
+            cs = "0"
         else:
-            cs = '1'
+            cs = "1"
 
         exp.append(c)
 

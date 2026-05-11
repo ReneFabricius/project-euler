@@ -9,5 +9,5 @@ def longstCollSeqSBel(l):
                 S.append(S[-1] * 3 + 1)
         if len(S) > len(MS):
             MS = S
-    
+
     return len(MS), MS

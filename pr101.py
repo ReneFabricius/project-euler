@@ -1,9 +1,11 @@
 import numpy.linalg
 
+
 def P(n):
     return 1 - n + n**2 - n**3 + n**4 - n**5 + n**6 - n**7 + n**8 - n**9 + n**10
-    #return n**3
-    
+    # return n**3
+
+
 def problem101():
     C = 10
     B = [P(x) for x in range(1, C + 1)]
@@ -13,7 +15,7 @@ def problem101():
         Pln = numpy.linalg.solve(M, B[:i])
         ps = 0
         for j in range(len(Pln)):
-            ps += Pln[j]*(i + 1)**j
+            ps += Pln[j] * (i + 1) ** j
         s += ps
-    
+
     return int(round(s))

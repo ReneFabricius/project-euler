@@ -1,5 +1,6 @@
 from Pell_equation import pellEqu
 
+
 def problem66(lD):
     m = 0
     mD = 0
@@ -9,5 +10,5 @@ def problem66(lD):
             if S[0][0] > m:
                 m = S[0][0]
                 mD = D
-    
+
     return mD

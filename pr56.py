@@ -1,4 +1,3 @@
-
 def problem56():
     s = 0
     ma = 0
@@ -10,10 +9,10 @@ def problem56():
             while x:
                 cs += x % 10
                 x //= 10
-            
+
             if cs > s:
                 s = cs
                 ma = a
                 mb = b
-    
+
     return s, ma, mb

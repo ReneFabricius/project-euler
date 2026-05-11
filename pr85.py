@@ -6,6 +6,7 @@ def countRec(w, h):
             s += hc * (h - rh + 1)
     return s
 
+
 def problem85(L):
     mD = L
     mG = (0, 0)

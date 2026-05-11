@@ -1,27 +1,27 @@
 from itertools import permutations
 
+
 def problem43():
     D = "0123456789"
     s = 0
     for p in permutations(D):
-        if p[0] == '0':
+        if p[0] == "0":
             continue
-        if int(p[3]) % 2 != 0:      # 2
+        if int(p[3]) % 2 != 0:  # 2
             continue
-        if int(p[5]) % 5 != 0:      # 5
+        if int(p[5]) % 5 != 0:  # 5
             continue
-        if int(''.join(p[2:5:])) % 3 != 0:      # 3
+        if int("".join(p[2:5:])) % 3 != 0:  # 3
             continue
-        if int(''.join(p[4:7:])) % 7 != 0:      # 7
+        if int("".join(p[4:7:])) % 7 != 0:  # 7
             continue
-        if int(''.join(p[5:8:])) % 11 != 0:      # 11
+        if int("".join(p[5:8:])) % 11 != 0:  # 11
             continue
-        if int(''.join(p[6:9:])) % 13 != 0:      # 13
+        if int("".join(p[6:9:])) % 13 != 0:  # 13
             continue
-        if int(''.join(p[7::])) % 17 != 0:      # 17
+        if int("".join(p[7::])) % 17 != 0:  # 17
             continue
-        
-        s += int(''.join(p))
-    
+
+        s += int("".join(p))
+
     return s
-        

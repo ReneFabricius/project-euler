@@ -2,19 +2,20 @@ import primes
 import math
 import more_itertools as mi
 
+
 def incr_R(R, cur_r, PE, P, n):
     for ri in range(len(R) - 1, 0, -1):
         if R[ri - 1] > R[ri]:
-            if cur_r * P[ri]**(PE[R[ri] + 1] - PE[R[ri]]) <= n:
-                cur_r *= P[ri]**(PE[R[ri] + 1] - PE[R[ri]])
+            if cur_r * P[ri] ** (PE[R[ri] + 1] - PE[R[ri]]) <= n:
+                cur_r *= P[ri] ** (PE[R[ri] + 1] - PE[R[ri]])
                 R[ri] += 1
                 return True, cur_r
 
-        cur_r /= P[ri]**(PE[R[ri]])
+        cur_r /= P[ri] ** (PE[R[ri]])
         R[ri] = 0
 
-    if R[0] < len(PE) - 1 and cur_r * P[0]**(PE[R[0] + 1] - PE[R[0]]) <= n:
-        cur_r *= P[0]**(PE[R[0] + 1] - PE[R[0]])
+    if R[0] < len(PE) - 1 and cur_r * P[0] ** (PE[R[0] + 1] - PE[R[0]]) <= n:
+        cur_r *= P[0] ** (PE[R[0] + 1] - PE[R[0]])
         R[0] += 1
         return True, cur_r
 
@@ -27,7 +28,7 @@ def count_divs(R, PE):
         if R[i] == 0:
             return cd
 
-        cd *= (PE[R[i]] + 1)
+        cd *= PE[R[i]] + 1
 
     return cd
 
@@ -45,10 +46,10 @@ def find_max_div_count(n):
     i = 0
     while k <= n:
         repr_len = i
-        k *= P[i]**PE[1]
+        k *= P[i] ** PE[1]
         i += 1
 
-    R = [0]*repr_len
+    R = [0] * repr_len
 
     max_divs = 0
     cur_r = 1
@@ -72,7 +73,7 @@ def count_occurs(P, PCs, fc, n):
             break
 
     if len(fcr) == 1:
-        return PCs[int(n**(1/fcr[0]))]
+        return PCs[int(n ** (1 / fcr[0]))]
 
     c = 0
     for el in sorted(mi.distinct_permutations(fcr), reverse=True):
@@ -81,18 +82,18 @@ def count_occurs(P, PCs, fc, n):
         while not fin:
             c_base = 1
             for eii in range(len(indxs)):
-                c_base *= P[indxs[eii]]**el[eii]
+                c_base *= P[indxs[eii]] ** el[eii]
 
             inc_last = True
             while inc_last:
-                count = PCs[int((n/c_base)**(1/el[-1]))] - PCs[P[indxs[-1]]]
+                count = PCs[int((n / c_base) ** (1 / el[-1]))] - PCs[P[indxs[-1]]]
 
                 if count <= 0:
                     break
                 c += count
-                c_base /= P[indxs[-1]]**el[-2]
+                c_base /= P[indxs[-1]] ** el[-2]
                 indxs[-1] += 1
-                c_base *= P[indxs[-1]]**el[-2]
+                c_base *= P[indxs[-1]] ** el[-2]
 
             inc_ind = len(indxs) - 2
             while inc_ind >= 0:
@@ -102,9 +103,9 @@ def count_occurs(P, PCs, fc, n):
 
                 num = 1
                 for ejj in range(len(indxs)):
-                    num *= P[indxs[ejj]]**el[ejj]
+                    num *= P[indxs[ejj]] ** el[ejj]
 
-                occur_c = PCs[int((n/num)**(1/el[-1]))] - PCs[P[indxs[-1]]]
+                occur_c = PCs[int((n / num) ** (1 / el[-1]))] - PCs[P[indxs[-1]]]
                 if occur_c <= 0:
                     inc_ind -= 1
                 else:
@@ -122,18 +123,18 @@ def pr641(n):
 
     FCRZTSN = []
     i = 1
-    while 6*i + 1 <= mdc:
-        FCRZTSN += primes.all_decompositions_preinitialized_initializing(6*i + 1)
+    while 6 * i + 1 <= mdc:
+        FCRZTSN += primes.all_decompositions_preinitialized_initializing(6 * i + 1)
         i += 1
 
     max2p = math.log2(n)
 
     min_pow = 4
-    prime_lim = int((n/2**min_pow)**(1/min_pow))
+    prime_lim = int((n / 2**min_pow) ** (1 / min_pow))
     if prime_lim < 10:
         prime_lim = 10
     P = primes.primes(prime_lim)
-    PCs = [0]*(prime_lim + 1)
+    PCs = [0] * (prime_lim + 1)
     pi = 0
     pc = 0
     for i in range(2, prime_lim + 1):
@@ -144,7 +145,6 @@ def pr641(n):
 
     c = 1 if n > 0 else 0
 
-    CHSN = []
     for fc in FCRZTSN:
         if fc[0] - 1 > max2p:
             continue

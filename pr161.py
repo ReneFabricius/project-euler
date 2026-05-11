@@ -22,11 +22,11 @@ def rotate_base(BS_SHAPES, BS_ROTATED):
 
 class AdvShape:
     def __init__(self, **kwargs):
-        PWRS3 = kwargs['PWRS3']
-        PWRS2 = kwargs['PWRS2']
+        PWRS3 = kwargs["PWRS3"]
+        PWRS2 = kwargs["PWRS2"]
 
-        if 'M' in kwargs:
-            M = kwargs['M']
+        if "M" in kwargs:
+            M = kwargs["M"]
             self.M_ = copy.deepcopy(M)
             self.h_ = len(M)
             self.w_ = len(M[0])
@@ -65,7 +65,9 @@ class AdvShape:
             for i in range(len(self.bin_r_)):
                 self.hash_ += (self.bin_r_[i] + 1) * PWRS3[i]
 
-            self.sides_hashes_ = [[0, 0] for i in range(4)]  # top, right, down, left: increasing powers
+            self.sides_hashes_ = [
+                [0, 0] for i in range(4)
+            ]  # top, right, down, left: increasing powers
             # from left to right and from top down, on first index irregularities inside, on second outside
             for side in range(4):
                 dir = 1 - (side // 2) * 2
@@ -77,8 +79,8 @@ class AdvShape:
                         self.sides_hashes_[side][1] += PWRS2[i]
 
         else:
-            AS1 = kwargs['AS1']
-            AS2 = kwargs['AS2']
+            AS1 = kwargs["AS1"]
+            AS2 = kwargs["AS2"]
             self.h_ = 2 * (len(AS1.M_) - 1)
             self.w_ = len(AS1.M_[0])
             self.in_w_ = self.w_ - 2
@@ -96,19 +98,26 @@ class AdvShape:
             self.bin_r_ = [0 for i in range(2 * (self.h_ + self.w_ - 2 * 2))]
             for i in range(3 * self.in_w_):
                 self.bin_r_[i + (i // (2 * self.in_w_)) * 3 * self.in_w_] = AS1.bin_r_[
-                    i + (i // (2 * self.in_w_)) * self.in_w_]
+                    i + (i // (2 * self.in_w_)) * self.in_w_
+                ]
 
             for i in range(3 * self.in_w_):
                 self.bin_r_[i + 2 * self.in_w_] = AS2.bin_r_[i + self.in_w_]
 
             if self.bin_r_[2 * self.in_w_ - 1] < 1:
-                self.bin_r_[2 * self.in_w_ - 1] = -1 if self.M_[self.in_w_][self.in_w_] == 0 else 0
+                self.bin_r_[2 * self.in_w_ - 1] = (
+                    -1 if self.M_[self.in_w_][self.in_w_] == 0 else 0
+                )
 
             if self.bin_r_[2 * self.in_w_] < 1:
-                self.bin_r_[2 * self.in_w_] = -1 if self.M_[self.in_w_ + 1][self.in_w_] == 0 else 0
+                self.bin_r_[2 * self.in_w_] = (
+                    -1 if self.M_[self.in_w_ + 1][self.in_w_] == 0 else 0
+                )
 
             if self.bin_r_[5 * self.in_w_ - 1] < 1:
-                self.bin_r_[5 * self.in_w_ - 1] = -1 if self.M_[self.in_w_ + 1][1] == 0 else 0
+                self.bin_r_[5 * self.in_w_ - 1] = (
+                    -1 if self.M_[self.in_w_ + 1][1] == 0 else 0
+                )
 
             if self.bin_r_[5 * self.in_w_] < 1:
                 self.bin_r_[5 * self.in_w_] = -1 if self.M_[self.in_w_][1] == 0 else 0
@@ -117,9 +126,11 @@ class AdvShape:
             for i in range(len(self.bin_r_)):
                 self.hash_ += (self.bin_r_[i] + 1) * PWRS3[i]
 
-            self.sides_hashes_ = [[0, 0] for i in range(4)]  # top, right, down, left: increasing powers
+            self.sides_hashes_ = [
+                [0, 0] for i in range(4)
+            ]  # top, right, down, left: increasing powers
             # from left to right and from top down, on first index irregularities inside, on second outside
-            side_lens = [self.in_w_, 2 * self.in_w_, self.in_w_, 2*self.in_w_]
+            side_lens = [self.in_w_, 2 * self.in_w_, self.in_w_, 2 * self.in_w_]
             for side in range(4):
                 dir = 1 - (side // 2) * 2
                 start_ind = sum(side_lens[:side]) + (side // 2) * (side_lens[side] - 1)
@@ -227,16 +238,6 @@ def get_req(PW2, n):
 def process_M(M, PWRS3):
     h = len(M) - 2
     w = len(M[0]) - 2
-    SZ = [w, h]
-    START_POINTS = [[[0, 1], [1, 1]], [[1, w + 1], [1, w]], [[h + 1, w], [h, w]], [[h, 0], [h, 1]]]
-    abs_i = 0
-    for s in range(4):
-        ch = (1 - s//2)*2 - 1
-        co = (s + 1) % 2
-        lim_i = s % 2
-        COORD_CH = [0, 0]
-        for pi in range(SZ[lim_i]):
-            COORD = START_POINTS[s]
     bin_r_ = [0] * (h + w) * 2  # top, left, down, right: cw
 
     hash_ = 0
@@ -306,16 +307,14 @@ def find_adv_shapes(BASE_ROT, PWRS2, PWRS3):
 
 
 def pr161():
-    GRID_SZ = [9, 12]
     SP_SIZE = 3
     MAX_PICK_N = 5
     POS_COUNT = SP_SIZE * SP_SIZE
-    BS_SHAPES = [[[0, -1], [0, 1]],
-                 [[-1, 0], [0, 1]]]
+    BS_SHAPES = [[[0, -1], [0, 1]], [[-1, 0], [0, 1]]]
     BS_ROTATED = []
 
-    PWRS2 = [2 ** i for i in range(4 * 2 * SP_SIZE)]
-    PWRS3 = [3 ** i for i in range(4 * 2 * SP_SIZE)]
+    PWRS2 = [2**i for i in range(4 * 2 * SP_SIZE)]
+    PWRS3 = [3**i for i in range(4 * 2 * SP_SIZE)]
     ADV_SHAPES = {}
 
     rotate_base(BS_SHAPES, BS_ROTATED)
@@ -326,7 +325,6 @@ def pr161():
         P[0] = pick_n
         not_fin = True
         while not_fin:
-
             # print(P)
 
             L = []
@@ -365,15 +363,27 @@ def pr161():
     ADV_ADV_SHAPES = {}
     for k1 in ADV_SHAPES:
         S1 = ADV_SHAPES[k1][0]
-        if S1.sides_hashes_[0][1] != 0 or (S1.sides_hashes_[0][0] & PWRS2[1] == PWRS2[1]):
+        if S1.sides_hashes_[0][1] != 0 or (
+            S1.sides_hashes_[0][0] & PWRS2[1] == PWRS2[1]
+        ):
             continue
         for k2 in ADV_SHAPES:
             S2 = ADV_SHAPES[k2][0]
 
-            if S1.sides_hashes_[2][1] | S2.sides_hashes_[0][0] == S2.sides_hashes_[0][0] and\
-                S1.sides_hashes_[2][0] | S2.sides_hashes_[0][1] == S1.sides_hashes_[2][0] and\
-                    ((S1.sides_hashes_[2][0] & PWRS2[1] == 0 and S2.sides_hashes_[0][0] & PWRS2[1] == 0) or\
-                     S1.sides_hashes_[2][1] & PWRS2[1] == PWRS2[1] or S2.sides_hashes_[0][1] & PWRS2[1] == PWRS2[1]):
+            if (
+                S1.sides_hashes_[2][1] | S2.sides_hashes_[0][0]
+                == S2.sides_hashes_[0][0]
+                and S1.sides_hashes_[2][0] | S2.sides_hashes_[0][1]
+                == S1.sides_hashes_[2][0]
+                and (
+                    (
+                        S1.sides_hashes_[2][0] & PWRS2[1] == 0
+                        and S2.sides_hashes_[0][0] & PWRS2[1] == 0
+                    )
+                    or S1.sides_hashes_[2][1] & PWRS2[1] == PWRS2[1]
+                    or S2.sides_hashes_[0][1] & PWRS2[1] == PWRS2[1]
+                )
+            ):
                 AS = AdvShape(AS1=S1, AS2=S2, PWRS3=PWRS3, PWRS2=PWRS2)
                 AS_count = ADV_SHAPES[k1][1] * ADV_SHAPES[k2][1]
                 if AS.hash_ in ADV_ADV_SHAPES:
@@ -387,20 +397,32 @@ def pr161():
         for corner in range(4):
             s1 = corner
             s2 = (corner + 1) % 4
-            if AS.sides_hashes_[s1][1] == 0 and \
-                    AS.sides_hashes_[s2][1] == 0 and \
-                    AS.sides_hashes_[s1][0] in [0, PWRS2[(s1//2)*((1 + s1 % 2)*AS.in_w_ - 1)]] and \
-                    AS.sides_hashes_[s2][0] in \
-                    [0, PWRS2[(1 - (corner % 2 + corner // 2) % 2)*((1 + s2 % 2)*AS.in_w_ - 1)]]:
+            if (
+                AS.sides_hashes_[s1][1] == 0
+                and AS.sides_hashes_[s2][1] == 0
+                and AS.sides_hashes_[s1][0]
+                in [0, PWRS2[(s1 // 2) * ((1 + s1 % 2) * AS.in_w_ - 1)]]
+                and AS.sides_hashes_[s2][0]
+                in [
+                    0,
+                    PWRS2[
+                        (1 - (corner % 2 + corner // 2) % 2)
+                        * ((1 + s2 % 2) * AS.in_w_ - 1)
+                    ],
+                ]
+            ):
                 CORNERS[corner][h] = ADV_ADV_SHAPES[h]
 
     SIDES = [{} for i in range(4)]  # start top, then cw
     for h in ADV_ADV_SHAPES:
         AS = ADV_ADV_SHAPES[h][0]
         for side in range(4):
-            if AS.sides_hashes_[side][1] == 0 and \
-                    AS.sides_hashes_[side][0] in [0, PWRS2[0], PWRS2[(1 + side % 2)*AS.in_w_ - 1],
-                                                  PWRS2[0] | PWRS2[(1 + side % 2)*AS.in_w_ - 1]]:
+            if AS.sides_hashes_[side][1] == 0 and AS.sides_hashes_[side][0] in [
+                0,
+                PWRS2[0],
+                PWRS2[(1 + side % 2) * AS.in_w_ - 1],
+                PWRS2[0] | PWRS2[(1 + side % 2) * AS.in_w_ - 1],
+            ]:
                 SIDES[side][h] = ADV_ADV_SHAPES[h]
 
     HALVES = {}
@@ -412,16 +434,28 @@ def pr161():
         C0 = CORNERS[0][kc0][0]
         for ks0 in SIDES[0]:
             S0 = SIDES[0][ks0][0]
-            if C0.sides_hashes_[3][1] | S0.sides_hashes_[1][0] == S0.sides_hashes_[1][0] and \
-                C0.sides_hashes_[3][0] | S0.sides_hashes_[1][1] == C0.sides_hashes_[3][0] and \
-                    (C0.sides_hashes_[3][1] | PWRS2[5]) & S0.sides_hashes_[1][0] == S0.sides_hashes_[1][0] and \
-                    (S0.sides_hashes_[1][1] | PWRS2[5]) & C0.sides_hashes_[3][0] == C0.sides_hashes_[3][0]:
+            if (
+                C0.sides_hashes_[3][1] | S0.sides_hashes_[1][0]
+                == S0.sides_hashes_[1][0]
+                and C0.sides_hashes_[3][0] | S0.sides_hashes_[1][1]
+                == C0.sides_hashes_[3][0]
+                and (C0.sides_hashes_[3][1] | PWRS2[5]) & S0.sides_hashes_[1][0]
+                == S0.sides_hashes_[1][0]
+                and (S0.sides_hashes_[1][1] | PWRS2[5]) & C0.sides_hashes_[3][0]
+                == C0.sides_hashes_[3][0]
+            ):
                 for kc3 in CORNERS[3]:
                     C3 = CORNERS[3][kc3][0]
-                    if C3.sides_hashes_[1][1] | S0.sides_hashes_[3][0] == S0.sides_hashes_[3][0] and \
-                        C3.sides_hashes_[1][0] | S0.sides_hashes_[3][1] == C3.sides_hashes_[1][0] and \
-                            (C3.sides_hashes_[1][1] | PWRS2[5]) & S0.sides_hashes_[3][0] == S0.sides_hashes_[3][0] and \
-                            (S0.sides_hashes_[3][1] | PWRS2[5]) & C3.sides_hashes_[1][0] == C3.sides_hashes_[1][0]:
+                    if (
+                        C3.sides_hashes_[1][1] | S0.sides_hashes_[3][0]
+                        == S0.sides_hashes_[3][0]
+                        and C3.sides_hashes_[1][0] | S0.sides_hashes_[3][1]
+                        == C3.sides_hashes_[1][0]
+                        and (C3.sides_hashes_[1][1] | PWRS2[5]) & S0.sides_hashes_[3][0]
+                        == S0.sides_hashes_[3][0]
+                        and (S0.sides_hashes_[3][1] | PWRS2[5]) & C3.sides_hashes_[1][0]
+                        == C3.sides_hashes_[1][0]
+                    ):
                         count += 1
                         half_bin_repr = [0] * 9
                         for i in range(3):
@@ -446,7 +480,9 @@ def pr161():
                             elif half_bin_repr[i] > 0:
                                 hash += PWRS2[9 + i]
 
-                        half_count = CORNERS[0][kc0][1] * CORNERS[3][kc3][1] * SIDES[0][ks0][1]
+                        half_count = (
+                            CORNERS[0][kc0][1] * CORNERS[3][kc3][1] * SIDES[0][ks0][1]
+                        )
                         if hash in HALVES:
                             HALVES[hash] += half_count
                         else:
@@ -454,7 +490,13 @@ def pr161():
 
                         if count < 0:
                             for i in range(8):
-                                print(str(C3.M_[i]) + " " + str(S0.M_[i]) + " " + str(C0.M_[i]))
+                                print(
+                                    str(C3.M_[i])
+                                    + " "
+                                    + str(S0.M_[i])
+                                    + " "
+                                    + str(C0.M_[i])
+                                )
                             print("\n")
                             print(str(half_bin_repr))
                             print("\n")
@@ -463,7 +505,7 @@ def pr161():
     for kh in HALVES:
         req_kh = get_req(PWRS2, kh)
         if req_kh in HALVES:
-            result_count += HALVES[kh]*HALVES[req_kh]
+            result_count += HALVES[kh] * HALVES[req_kh]
 
     print(str(count))
     return result_count
@@ -489,11 +531,11 @@ def test():
     P3 = [3**i for i in range(50)]
     AS = AdvShape(AS1=S1, AS2=S2, PWRS3=P3, PWRS2=P2)
 
-    print('S1')
+    print("S1")
     pm(S1.M_)
-    print('S2')
+    print("S2")
     pm(S2.M_)
-    print('AS')
+    print("AS")
     pm(AS.M_)
 
     return S1, S2, AS
@@ -545,10 +587,10 @@ def build_tiles(w, h, SHPS, P2, FS):
     start_i_i = [[1, 1], [1, w], [h, 1], [1, 1]]
     start_i_o = [[0, 1], [1, w + 1], [h + 1, 1], [1, 0]]
     lims = [w, h, w, h]
-    cur_i = w*h - 1
+    cur_i = w * h - 1
     while cur_i >= 0:
         if try_increment(cur_i // w, cur_i % w, SHPS, M, MP):
-            cur_i = w*h - 1
+            cur_i = w * h - 1
             # check, save
             forced_filled = True
             for fcoor in FS:
@@ -562,8 +604,8 @@ def build_tiles(w, h, SHPS, P2, FS):
                 # dents
                 for s in range(4):
                     for inc in range(lims[s]):
-                        cp_r = start_i_i[s][0] + (1 - var_is[s])*inc
-                        cp_c = start_i_i[s][1] + var_is[s]*inc
+                        cp_r = start_i_i[s][0] + (1 - var_is[s]) * inc
+                        cp_c = start_i_i[s][1] + var_is[s] * inc
                         if M[cp_r][cp_c] == 0:
                             key += P2[p2_pos]
 
@@ -627,12 +669,12 @@ def visualize_tile(tile, w, h, P2):
 
 
 def visualise_half(half, w, P2):
-    M = [[1 - j for i in range(3*w)] for j in range(2)]
-    for di in range(3*w):
+    M = [[1 - j for i in range(3 * w)] for j in range(2)]
+    for di in range(3 * w):
         if half & P2[di] == P2[di]:
             M[0][di] = 0
-    for pi in range(3*w):
-        if half & P2[3*w + pi] == P2[3*w + pi]:
+    for pi in range(3 * w):
+        if half & P2[3 * w + pi] == P2[3 * w + pi]:
             M[1][pi] = 1
 
     return M
@@ -640,7 +682,7 @@ def visualise_half(half, w, P2):
 
 def build_double_tiles(TILES, tw, th, P2):
     # Offsets of powers of 2 for specific top and bottom features
-    prots_offset = 2*(tw + th)
+    prots_offset = 2 * (tw + th)
     top_dents_offset = 0
     bottom_dents_offset = tw + th
     top_prots_offset = prots_offset + top_dents_offset
@@ -661,10 +703,10 @@ def build_double_tiles(TILES, tw, th, P2):
 
     full_top_prot = top_prots_mask
 
-    top_middle_dent = P2[top_dents_offset + tw//2]
-    bottom_middle_dent = P2[bottom_dents_offset + tw//2]
-    top_middle_prot = P2[top_prots_offset + tw//2]
-    bottom_middle_prot = P2[bottom_prots_offset + tw//2]
+    top_middle_dent = P2[top_dents_offset + tw // 2]
+    bottom_middle_dent = P2[bottom_dents_offset + tw // 2]
+    top_middle_prot = P2[top_prots_offset + tw // 2]
+    bottom_middle_prot = P2[bottom_prots_offset + tw // 2]
 
     top_tile_first_part_dents_mask = 0
     top_tile_first_part_prots_mask = 0
@@ -676,13 +718,13 @@ def build_double_tiles(TILES, tw, th, P2):
     btm_tile_second_part_prots_mask = 0
 
     top_t_fp_d_shift = 0
-    top_t_fp_p_shift = 2*th
+    top_t_fp_p_shift = 2 * th
     top_t_sp_d_shift = th
-    top_t_sp_p_shift = 3*th
+    top_t_sp_p_shift = 3 * th
     btm_t_fp_d_shift = th
-    btm_t_fp_p_shift = 3*th
-    btm_t_sp_d_shift = 2*th
-    btm_t_sp_p_shift = 4*th
+    btm_t_fp_p_shift = 3 * th
+    btm_t_sp_d_shift = 2 * th
+    btm_t_sp_p_shift = 4 * th
 
     for i in range(tw + th - 1):
         top_tile_first_part_dents_mask |= P2[top_dents_offset + i]
@@ -692,25 +734,38 @@ def build_double_tiles(TILES, tw, th, P2):
         btm_tile_first_part_prots_mask |= P2[prots_offset + tw + 1 + i]
 
     for i in range(th - 1):
-        top_tile_second_part_dents_mask |= P2[2*tw + th + i]
-        top_tile_second_part_prots_mask |= P2[prots_offset + 2*tw + th + i]
+        top_tile_second_part_dents_mask |= P2[2 * tw + th + i]
+        top_tile_second_part_prots_mask |= P2[prots_offset + 2 * tw + th + i]
 
-        btm_tile_second_part_dents_mask |= P2[top_dents_offset + 2*tw + th + 1 + i]
-        btm_tile_second_part_prots_mask |= P2[prots_offset + 2*tw + th + 1 + i]
+        btm_tile_second_part_dents_mask |= P2[top_dents_offset + 2 * tw + th + 1 + i]
+        btm_tile_second_part_prots_mask |= P2[prots_offset + 2 * tw + th + 1 + i]
 
-    TOP_T_M = [top_tile_first_part_dents_mask, top_tile_first_part_prots_mask,
-               top_tile_second_part_dents_mask, top_tile_second_part_prots_mask]
-    BTM_T_M = [btm_tile_first_part_dents_mask, btm_tile_first_part_prots_mask,
-               btm_tile_second_part_dents_mask, btm_tile_second_part_prots_mask]
+    TOP_T_M = [
+        top_tile_first_part_dents_mask,
+        top_tile_first_part_prots_mask,
+        top_tile_second_part_dents_mask,
+        top_tile_second_part_prots_mask,
+    ]
+    BTM_T_M = [
+        btm_tile_first_part_dents_mask,
+        btm_tile_first_part_prots_mask,
+        btm_tile_second_part_dents_mask,
+        btm_tile_second_part_prots_mask,
+    ]
     TOP_T_S = [top_t_fp_d_shift, top_t_fp_p_shift, top_t_sp_d_shift, top_t_sp_p_shift]
     BTM_T_S = [btm_t_fp_d_shift, btm_t_fp_p_shift, btm_t_sp_d_shift, btm_t_sp_p_shift]
 
-    R_S_TOP_T_IN = [2*tw + th - 1, 4*tw + 3*th - 1, 3*tw + 3*th - 1]
-    R_S_BTM_T_IN = [tw - 1, 3*tw + 2*th - 1, 3*tw + 2*th]
-    R_S_OUT = [tw + th - 1, tw+ th, 3*tw + 5*th - 1, 3*tw + 5*th]
-    L_S_TOP_T_IN = [tw + th, 3*tw + 3*th, 4*tw + 4*th - 1]
-    L_S_BTM_T_IN = [0, 2*tw + 2*th, 4*tw + 3*th]
-    L_S_OUT = [2*tw + 3*th - 1, 2*tw + 3*th, 4*tw + 7*th - 1, 4*tw + 7*th]
+    R_S_TOP_T_IN = [2 * tw + th - 1, 4 * tw + 3 * th - 1, 3 * tw + 3 * th - 1]
+    R_S_BTM_T_IN = [tw - 1, 3 * tw + 2 * th - 1, 3 * tw + 2 * th]
+    R_S_OUT = [tw + th - 1, tw + th, 3 * tw + 5 * th - 1, 3 * tw + 5 * th]
+    L_S_TOP_T_IN = [tw + th, 3 * tw + 3 * th, 4 * tw + 4 * th - 1]
+    L_S_BTM_T_IN = [0, 2 * tw + 2 * th, 4 * tw + 3 * th]
+    L_S_OUT = [
+        2 * tw + 3 * th - 1,
+        2 * tw + 3 * th,
+        4 * tw + 7 * th - 1,
+        4 * tw + 7 * th,
+    ]
 
     TOP_T_INS = [R_S_TOP_T_IN, L_S_TOP_T_IN]
     BTM_T_INS = [R_S_BTM_T_IN, L_S_BTM_T_IN]
@@ -731,8 +786,12 @@ def build_double_tiles(TILES, tw, th, P2):
             # dent in the middle on top
             continue
 
-        required_dents = (top_t & bottom_prots_mask) >> (bottom_prots_offset - top_dents_offset)
-        allowed_prots = (top_t & bottom_dents_mask) << (top_prots_offset - bottom_dents_offset)
+        required_dents = (top_t & bottom_prots_mask) >> (
+            bottom_prots_offset - top_dents_offset
+        )
+        allowed_prots = (top_t & bottom_dents_mask) << (
+            top_prots_offset - bottom_dents_offset
+        )
 
         required_prots = 0
         forbidden_dents = 0
@@ -773,9 +832,13 @@ def build_double_tiles(TILES, tw, th, P2):
                     dtile |= OUTS[i][2]
                 if BTM_T_INS[i][2] & btm_t == BTM_T_INS[i][2]:
                     dtile |= OUTS[i][3]
-                if (TOP_T_INS[i][0] & top_t == TOP_T_INS[i][0]) and (BTM_T_INS[i][1] & btm_t == 0):
+                if (TOP_T_INS[i][0] & top_t == TOP_T_INS[i][0]) and (
+                    BTM_T_INS[i][1] & btm_t == 0
+                ):
                     dtile |= OUTS[i][0]
-                if (BTM_T_INS[i][0] & btm_t == BTM_T_INS[i][0]) and (TOP_T_INS[i][1] & top_t == 0):
+                if (BTM_T_INS[i][0] & btm_t == BTM_T_INS[i][0]) and (
+                    TOP_T_INS[i][1] & top_t == 0
+                ):
                     dtile |= OUTS[i][1]
 
             count = TILES[top_t] * TILES[btm_t]
@@ -793,7 +856,7 @@ def build_double_tiles(TILES, tw, th, P2):
 def filter_invalid_dtiles(DTILES, P2):
     tw = 3
     th = 3
-    prots_offset = 2 * (tw + 2*th)
+    prots_offset = 2 * (tw + 2 * th)
     top_dents_offset = 0
     top_prots_offset = prots_offset + top_dents_offset
 
@@ -826,11 +889,11 @@ def sort_dtiles(DTILES, tw, th, P2):
     r_hash_d_mask = 0
     r_hash_p_mask = 0
     r_hash_d_shift = tw
-    r_hash_p_shift = 2*(tw + th) + tw - (th - 1)
+    r_hash_p_shift = 2 * (tw + th) + tw - (th - 1)
 
     for i in range(th):
-        right_prots |= P2[2*(tw + th) + tw + i]
-        left_prots |= P2[2*(tw + th) + 2*tw + th + i]
+        right_prots |= P2[2 * (tw + th) + tw + i]
+        left_prots |= P2[2 * (tw + th) + 2 * tw + th + i]
 
     for i in range(tw + th - 2):
         right_dents |= P2[1 + i]
@@ -838,18 +901,20 @@ def sort_dtiles(DTILES, tw, th, P2):
     for i in range(tw - 1):
         left_dents |= P2[i]
     for i in range(th - 1):
-        left_dents |= P2[2*tw + th + i]
+        left_dents |= P2[2 * tw + th + i]
 
     for i in range(th - 1):
         r_hash_d_mask |= P2[tw + i]
-        r_hash_p_mask |= P2[2*(tw + th) + tw + i]
+        r_hash_p_mask |= P2[2 * (tw + th) + tw + i]
 
     R = {}
     M = {}
     L = {}
 
     for dtile in DTILES:
-        r_hash = ((dtile & r_hash_d_mask) >> r_hash_d_shift) | ((dtile & r_hash_p_mask) >> r_hash_p_shift)
+        r_hash = ((dtile & r_hash_d_mask) >> r_hash_d_shift) | (
+            (dtile & r_hash_p_mask) >> r_hash_p_shift
+        )
         if r_hash in M:
             M[r_hash].append([dtile, DTILES[dtile]])
         else:
@@ -870,12 +935,12 @@ def sort_dtiles(DTILES, tw, th, P2):
 def build_halves(L, M, R, tw, th, P2):
     l_hash_d_mask = 0
     l_hash_p_mask = 0
-    l_hash_d_shift = 2*tw + th - (th - 1)
-    l_hash_p_shift = 2*(tw + th) + 2*tw + th
+    l_hash_d_shift = 2 * tw + th - (th - 1)
+    l_hash_p_shift = 2 * (tw + th) + 2 * tw + th
 
     for i in range(th - 1):
-        l_hash_d_mask |= P2[2*tw + th + i]
-        l_hash_p_mask |= P2[2*(tw + th) + 2*tw + th + i]
+        l_hash_d_mask |= P2[2 * tw + th + i]
+        l_hash_p_mask |= P2[2 * (tw + th) + 2 * tw + th + i]
 
     lt_out_d_mask = 0
     lt_out_p_mask = 0
@@ -883,33 +948,59 @@ def build_halves(L, M, R, tw, th, P2):
     mt_out_p_mask = 0
     rt_out_d_mask = 0
     rt_out_p_mask = 0
-    lt_out_d_shift = tw + th                        # to right
-    lt_out_p_shift = 2*(tw + th) + tw + th - 3*tw   # to right
-    mt_out_d_shift = tw + th - tw                   # to right
-    mt_out_p_shift = 2*(tw + th) + tw + th - 4*tw   # to right
-    rt_out_d_shift = tw + th - 2*tw                 # to right
-    rt_out_p_shift = 2*(tw + th) + tw + th - 5*tw   # to right
+    lt_out_d_shift = tw + th  # to right
+    lt_out_p_shift = 2 * (tw + th) + tw + th - 3 * tw  # to right
+    mt_out_d_shift = tw + th - tw  # to right
+    mt_out_p_shift = 2 * (tw + th) + tw + th - 4 * tw  # to right
+    rt_out_d_shift = tw + th - 2 * tw  # to right
+    rt_out_p_shift = 2 * (tw + th) + tw + th - 5 * tw  # to right
 
-    LT_OUT_COMB = [P2[tw + th - 1], P2[2*(tw + th) + tw + th - 1], P2[2*(tw + th) + 2*tw + th - 1]]
-    MT_OUT_L_COMB = [P2[2*(tw + th) - 1], P2[4*(tw + th) - 1], P2[2*(tw + th) + tw + th]]
-    MT_OUT_R_COMB = [P2[tw + th - 1], P2[2*(tw + th) + tw + th - 1], P2[2*(tw + th) + 2*tw + th - 1]]
-    RT_OUT_COMB = [P2[2*(tw + th) - 1], P2[4*(tw + th) - 1], P2[2*(tw + th) + tw + th]]
-    HALF_IN_COMB = [P2[tw - 1], P2[tw], P2[2*tw - 1], P2[2*tw],
-                    P2[3*tw + tw - 1], P2[3*tw + tw], P2[3*tw + 2*tw - 1], P2[3*tw + 2*tw]]
+    LT_OUT_COMB = [
+        P2[tw + th - 1],
+        P2[2 * (tw + th) + tw + th - 1],
+        P2[2 * (tw + th) + 2 * tw + th - 1],
+    ]
+    MT_OUT_L_COMB = [
+        P2[2 * (tw + th) - 1],
+        P2[4 * (tw + th) - 1],
+        P2[2 * (tw + th) + tw + th],
+    ]
+    MT_OUT_R_COMB = [
+        P2[tw + th - 1],
+        P2[2 * (tw + th) + tw + th - 1],
+        P2[2 * (tw + th) + 2 * tw + th - 1],
+    ]
+    RT_OUT_COMB = [
+        P2[2 * (tw + th) - 1],
+        P2[4 * (tw + th) - 1],
+        P2[2 * (tw + th) + tw + th],
+    ]
+    HALF_IN_COMB = [
+        P2[tw - 1],
+        P2[tw],
+        P2[2 * tw - 1],
+        P2[2 * tw],
+        P2[3 * tw + tw - 1],
+        P2[3 * tw + tw],
+        P2[3 * tw + 2 * tw - 1],
+        P2[3 * tw + 2 * tw],
+    ]
 
     for i in range(tw - 1):
         lt_out_d_mask |= P2[tw + th + i]
-        lt_out_p_mask |= P2[2*(tw + th) + tw + th + i]
+        lt_out_p_mask |= P2[2 * (tw + th) + tw + th + i]
         rt_out_d_mask |= P2[tw + th + 1 + i]
-        rt_out_p_mask |= P2[2*(tw + th) + tw + th + 1 + i]
+        rt_out_p_mask |= P2[2 * (tw + th) + tw + th + 1 + i]
 
     for i in range(tw - 2):
         mt_out_d_mask |= P2[tw + th + 1 + i]
-        mt_out_p_mask |= P2[2*(tw + th) + tw + th + 1 + i]
+        mt_out_p_mask |= P2[2 * (tw + th) + tw + th + 1 + i]
 
     HALVES = {}
     for rdtile in R:
-        rdt_req_r_hash = ((rdtile & l_hash_d_mask) >> l_hash_d_shift) | ((rdtile & l_hash_p_mask) >> l_hash_p_shift)
+        rdt_req_r_hash = ((rdtile & l_hash_d_mask) >> l_hash_d_shift) | (
+            (rdtile & l_hash_p_mask) >> l_hash_p_shift
+        )
         if rdt_req_r_hash in M:
             rdt_req_dent = 0
             rdt_forb_prot = 0
@@ -926,7 +1017,9 @@ def build_halves(L, M, R, tw, th, P2):
                 if mdtile & rdt_forb_prot != 0:
                     continue
 
-                mdt_req_r_hash = ((mdtile & l_hash_d_mask) >> l_hash_d_shift) | ((mdtile & l_hash_p_mask) >> l_hash_p_shift)
+                mdt_req_r_hash = ((mdtile & l_hash_d_mask) >> l_hash_d_shift) | (
+                    (mdtile & l_hash_p_mask) >> l_hash_p_shift
+                )
                 if mdt_req_r_hash in L:
                     mdt_req_dent = 0
                     mdt_forb_prot = 0
@@ -943,12 +1036,14 @@ def build_halves(L, M, R, tw, th, P2):
                         if ldtile & mdt_forb_prot != 0:
                             continue
 
-                        half_hash = ((ldtile & lt_out_d_mask) >> lt_out_d_shift) | \
-                                    ((ldtile & lt_out_p_mask) >> lt_out_p_shift) | \
-                                    ((mdtile & mt_out_d_mask) >> mt_out_d_shift) | \
-                                    ((mdtile & mt_out_p_mask) >> mt_out_p_shift) | \
-                                    ((rdtile & rt_out_d_mask) >> rt_out_d_shift) | \
-                                    ((rdtile & rt_out_p_mask) >> rt_out_p_shift)
+                        half_hash = (
+                            ((ldtile & lt_out_d_mask) >> lt_out_d_shift)
+                            | ((ldtile & lt_out_p_mask) >> lt_out_p_shift)
+                            | ((mdtile & mt_out_d_mask) >> mt_out_d_shift)
+                            | ((mdtile & mt_out_p_mask) >> mt_out_p_shift)
+                            | ((rdtile & rt_out_d_mask) >> rt_out_d_shift)
+                            | ((rdtile & rt_out_p_mask) >> rt_out_p_shift)
+                        )
 
                         if ldtile & LT_OUT_COMB[2] == LT_OUT_COMB[2]:
                             half_hash |= HALF_IN_COMB[4]
@@ -959,25 +1054,33 @@ def build_halves(L, M, R, tw, th, P2):
                         if rdtile & RT_OUT_COMB[2] == RT_OUT_COMB[2]:
                             half_hash |= HALF_IN_COMB[7]
 
-                        if (ldtile & LT_OUT_COMB[0] == LT_OUT_COMB[0]) and (mdtile & MT_OUT_L_COMB[1] == 0):
+                        if (ldtile & LT_OUT_COMB[0] == LT_OUT_COMB[0]) and (
+                            mdtile & MT_OUT_L_COMB[1] == 0
+                        ):
                             half_hash |= HALF_IN_COMB[0]
-                        if (mdtile & MT_OUT_L_COMB[0] == MT_OUT_L_COMB[0]) and (ldtile & LT_OUT_COMB[1] == 0):
+                        if (mdtile & MT_OUT_L_COMB[0] == MT_OUT_L_COMB[0]) and (
+                            ldtile & LT_OUT_COMB[1] == 0
+                        ):
                             half_hash |= HALF_IN_COMB[1]
-                        if (mdtile & MT_OUT_R_COMB[0] == MT_OUT_R_COMB[0]) and (rdtile & RT_OUT_COMB[1] == 0):
+                        if (mdtile & MT_OUT_R_COMB[0] == MT_OUT_R_COMB[0]) and (
+                            rdtile & RT_OUT_COMB[1] == 0
+                        ):
                             half_hash |= HALF_IN_COMB[2]
-                        if (rdtile & RT_OUT_COMB[0] == RT_OUT_COMB[0]) and (mdtile & MT_OUT_R_COMB[1] == 0):
+                        if (rdtile & RT_OUT_COMB[0] == RT_OUT_COMB[0]) and (
+                            mdtile & MT_OUT_R_COMB[1] == 0
+                        ):
                             half_hash |= HALF_IN_COMB[3]
 
                         half_coutn = R[rdtile] * mdtile_l[1] * ldtile_l[1]
 
-                        '''print("Combined L:")
+                        """print("Combined L:")
                         pm(visualize_tile(ldtile, tw, th, P2))
                         print("M:")
                         pm(visualize_tile(mdtile, tw, th, P2))
                         print("R:")
                         pm(visualize_tile(rdtile, tw, th, P2))
                         print("Result:")
-                        pm(visualise_half(half_hash, tw, P2))'''
+                        pm(visualise_half(half_hash, tw, P2))"""
 
                         if half_hash in HALVES:
                             HALVES[half_hash] += half_coutn
@@ -999,23 +1102,20 @@ def combine_halves(HALVES, hw, P2):
     for half in HALVES:
         req_pair = ((half & dents_mask) << hw) | ((half & prots_mask) >> hw)
         if req_pair in HALVES:
-            count += HALVES[half]*HALVES[req_pair]
-            '''print("Pairing:")
+            count += HALVES[half] * HALVES[req_pair]
+            """print("Pairing:")
             pm(visualise_half(half, 3, P2))
-            pm(visualise_half(req_pair, 3, P2))'''
+            pm(visualise_half(req_pair, 3, P2))"""
 
     return count
 
 
 def pr161_new():
-    GRID_SZ = [9, 12]
     SP_SIZE = 3
-    POS_COUNT = SP_SIZE * SP_SIZE
-    BS_SHAPES = [[[0, -1], [0, 1]],
-                 [[-1, 0], [0, 1]]]
+    BS_SHAPES = [[[0, -1], [0, 1]], [[-1, 0], [0, 1]]]
     BS_ROTATED = []
 
-    PWRS2 = [2 ** i for i in range(4 * 2 * SP_SIZE * 10)]
+    PWRS2 = [2**i for i in range(4 * 2 * SP_SIZE * 10)]
 
     rotate_base(BS_SHAPES, BS_ROTATED)
 
@@ -1024,7 +1124,7 @@ def pr161_new():
     # t_file = open("G:\Euler\pr161_dtile_test.txt", "w")
     DTILES = build_double_tiles(TILES, 3, 3, PWRS2)
 
-    '''print("Brute forcing dtiles")
+    """print("Brute forcing dtiles")
     DTILES_BF = build_tiles(3, 6, BS_ROTATED, PWRS2, [[1, 1], [2, 1], [3, 1], [4, 1]])
     print("Filtering bfced dtiles")
     VDTILES_BF = filter_invalid_dtiles(DTILES_BF, PWRS2)
@@ -1041,7 +1141,7 @@ def pr161_new():
         elif VDTILES_BF[vdtile] != DTILES[vdtile]:
             print("Different count: BF: " + str(VDTILES_BF[vdtile]) + ", N: " + str(DTILES[vdtile]))
 
-    return DTILES, VDTILES_BF'''
+    return DTILES, VDTILES_BF"""
 
     L, M, R = sort_dtiles(DTILES, 3, 6, PWRS2)
     HALVES = build_halves(L, M, R, 3, 6, PWRS2)

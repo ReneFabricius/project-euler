@@ -2,15 +2,16 @@ from math import factorial
 
 F = [factorial(i) for i in range(10)]
 
+
 def nextInChain(n):
     r = 0
     while n:
         d = n % 10
         n //= 10
         r += F[d]
-    
+
     return r
-    
+
 
 def problem74(l, lch):
     L = [-1 for i in range(l)]
@@ -31,7 +32,7 @@ def problem74(l, lch):
                     break
                 CH.append(nich)
                 nich = nextInChain(CH[-1])
-                
+
             if rl == -1:
                 ni = CH.index(nich)
                 for chi in range(len(CH)):
@@ -43,7 +44,7 @@ def problem74(l, lch):
                         else:
                             pl = len(CH) - ni
                             L[CH[chi]] = pl
-                        
+
                         if pl == lch:
                             c += 1
             else:
@@ -55,5 +56,5 @@ def problem74(l, lch):
                             c += 1
                     else:
                         D[CH[chi]] = pl
-    
+
     return c

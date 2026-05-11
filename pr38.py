@@ -6,20 +6,22 @@
 
 from itertools import permutations
 
+
 def concatenatedPandigitality(L):
-    s = ''
+    s = ""
     for l in L:
         s += str(l)
     ss = set(s)
-    return len(ss) == 9 and '0' not in ss
+    return len(ss) == 9 and "0" not in ss
+
 
 def problem38():
     P = list(permutations([str(x) for x in range(1, 10)], 4))
     LP = 0
-    
-    for i in range(8*8*7*6 + 6*6, len(P)):              # zacinam na permutacii 9182
-        ip = int(''.join(P[i]))
-        if concatenatedPandigitality([ip, 2*ip]):
+
+    for i in range(8 * 8 * 7 * 6 + 6 * 6, len(P)):  # zacinam na permutacii 9182
+        ip = int("".join(P[i]))
+        if concatenatedPandigitality([ip, 2 * ip]):
             LP = ip
-    
-    return LP*10**5 + 2*LP
+
+    return LP * 10**5 + 2 * LP

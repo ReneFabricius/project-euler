@@ -1,10 +1,8 @@
-
-
 def simple_comb(a, b, n):
     L = []
     L.append((0, 0, 0))
     while len(L) <= n:
-        mv = (n+1)*b
+        mv = (n + 1) * b
         mi = [0, 0]
         for pvi in range(len(L)):
             if L[-1][0] < L[pvi][0] + a < mv:
@@ -71,17 +69,20 @@ def pr167(a, b, n):
                     Dn[num] = 1
                     Di[num] = ins
 
-        cand = 10 ** 25
+        cand = 10**25
         for nc in Dn:
             if Dn[nc] == 1 and L[-1][0] < nc < cand:
                 cand = nc
 
-        L.append((cand,
-                  L[Di[cand][0]][1] +
-                  L[Di[cand][1]][1],
-                  L[Di[cand][0]][2] +
-                  L[Di[cand][1]][2],
-                  Di[cand][0], Di[cand][1]))
+        L.append(
+            (
+                cand,
+                L[Di[cand][0]][1] + L[Di[cand][1]][1],
+                L[Di[cand][0]][2] + L[Di[cand][1]][2],
+                Di[cand][0],
+                Di[cand][1],
+            )
+        )
 
     return L
 
@@ -126,12 +127,20 @@ def print_cycles(a, b, n):
     for ss in range(s, s + l):
         cp = ss
         while cp < len(L):
-            print('[' + str(cp) + '] ' + str(L[cp][0]) + ',' +
-                  str(L[cp][3]) + ',' + str(L[cp][4])
-                  + '\t')
+            print(
+                "["
+                + str(cp)
+                + "] "
+                + str(L[cp][0])
+                + ","
+                + str(L[cp][3])
+                + ","
+                + str(L[cp][4])
+                + "\t"
+            )
             cp += l
 
-        print('\n')
+        print("\n")
 
 
 def try_find_cycle(L, Pos, rep, cont_inds):
@@ -148,7 +157,7 @@ def try_find_cycle(L, Pos, rep, cont_inds):
 
             equals = True
             for ii in range(len(cont_inds)):
-                equals &= (L[ri_loc][cont_inds[ii]] == L[-1][cont_inds[ii]])
+                equals &= L[ri_loc][cont_inds[ii]] == L[-1][cont_inds[ii]]
 
             if not equals:
                 valid = False
@@ -162,7 +171,7 @@ def try_find_cycle(L, Pos, rep, cont_inds):
                 while lcci >= 0:
                     equals = True
                     for ii in range(len(cont_inds)):
-                        equals &= (L[lci][cont_inds[ii]] == L[lcci][cont_inds[ii]])
+                        equals &= L[lci][cont_inds[ii]] == L[lcci][cont_inds[ii]]
 
                     if not equals:
                         break
@@ -226,7 +235,16 @@ def compute_cycles(a, b, cont_inds):
             if L[-1][0] < cn < mn:
                 mn = cn
 
-        L.append((mn, L[C[mn][0]][1] + L[C[mn][1]][1], L[C[mn][0]][2] + L[C[mn][1]][2], C[mn][0], C[mn][1] - len(L), mn - L[-1][0]))
+        L.append(
+            (
+                mn,
+                L[C[mn][0]][1] + L[C[mn][1]][1],
+                L[C[mn][0]][2] + L[C[mn][1]][2],
+                C[mn][0],
+                C[mn][1] - len(L),
+                mn - L[-1][0],
+            )
+        )
         key = tuple(L[-1][cont_inds[i]] for i in range(len(cont_inds)))
         if key in Pos:
             Pos[key].append(len(L) - 1)
@@ -242,7 +260,7 @@ def compute_cycles(a, b, cont_inds):
 
 def comp_L(a, b, n):
     L = [(a, 1, 0, -1, -1, a), (b, 0, 1, -1, -1, b - a)]
-    M = 10 ** 106
+    M = 10**106
     A = set()
     U = set()
     C = {}
@@ -273,7 +291,15 @@ def comp_L(a, b, n):
             U.remove(tr)
 
         L.append(
-            (mn, L[C[mn][0]][1] + L[C[mn][1]][1], L[C[mn][0]][2] + L[C[mn][1]][2], C[mn][0], C[mn][1] - len(L), mn - L[-1][0]))
+            (
+                mn,
+                L[C[mn][0]][1] + L[C[mn][1]][1],
+                L[C[mn][0]][2] + L[C[mn][1]][2],
+                C[mn][0],
+                C[mn][1] - len(L),
+                mn - L[-1][0],
+            )
+        )
 
     return L
 
@@ -281,7 +307,7 @@ def comp_L(a, b, n):
 def comp_combined(n):
     L = []
     for s in range(2, 11):
-        L.append(comp_L(s, 2*s + 1, n))
+        L.append(comp_L(s, 2 * s + 1, n))
 
     FL = [sum([L[li][ni][0] for li in range(len(L))]) for ni in range(n)]
 
@@ -289,11 +315,11 @@ def comp_combined(n):
 
 
 def save_to_file(L, f):
-    file = open(f, 'w')
+    file = open(f, "w")
     for l in L:
         for li in range(len(l)):
             file.write(str(l[li]))
-            file.write('\t\t')
-        file.write('\n')
+            file.write("\t\t")
+        file.write("\n")
 
     file.close()

@@ -15,17 +15,18 @@ def isBouncy(n):
                 return True
             i = True
         ldig = dig
-    
+
     return False
-    
+
+
 def problem112(p):
     b = 0
     n = 1
     while True:
         if isBouncy(n):
             b += 1
-        if b >= p*n:
+        if b >= p * n:
             break
         n += 1
-    
+
     return b, n

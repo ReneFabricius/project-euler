@@ -7,6 +7,3 @@ def difSumoSSoSum(n):
         sqS += i
     sqS *= sqS
     return sqS - sSq
-    
-    
-    

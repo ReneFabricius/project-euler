@@ -5,6 +5,7 @@ def getDigits(n):
         n //= 10
     return list(reversed(D))
 
+
 def isPalindrome(D):
     a = 0
     b = len(D) - 1
@@ -13,10 +14,10 @@ def isPalindrome(D):
             return False
         a += 1
         b -= 1
-        
+
     return True
-    
-    
+
+
 def isLychel(n):
     D = getDigits(n)
     for i in range(49):
@@ -24,13 +25,14 @@ def isLychel(n):
         D = getDigits(n)
         if isPalindrome(D):
             return False
-    
+
     return True
+
 
 def lychelCount():
     c = 0
     for n in range(1, 10000):
         if isLychel(n):
             c += 1
-    
+
     return c

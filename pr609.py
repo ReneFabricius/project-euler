@@ -54,7 +54,5 @@ def problem609(l):
     for k in C:
         if C[k] > 0:
             res *= C[k]
-    
+
     return C, res % 1000000007
-    
-    

@@ -32,12 +32,12 @@ def test_decomposition(l):
                     pcm += pcp
                 pcp *= pc
 
-            for np in range(pc*pc, prim_lim + 1, pc):
+            for np in range(pc * pc, prim_lim + 1, pc):
                 PS[np] = False
 
     for rem in range(prim_lim + 1, l):
         if PRODS[rem] != rem:
-            SD[rem][rem/PRODS[rem]] += 1
+            SD[rem][rem / PRODS[rem]] += 1
 
     end_sieve = time()
     print("Time sieve: " + str(end_sieve - start_sieve))
@@ -59,13 +59,13 @@ def compute_digit_sum(n):
 def combinations_increment(CT):
     L = {2: CT[2], 3: CT[3], 4: CT[4]}
     res = 0
-    res += L[3]//2*3
+    res += L[3] // 2 * 3
     L[3] = L[3] % 2
     min24 = min(L[2], L[4])
-    res += min24*2
+    res += min24 * 2
     L[2] = L[2] - min24
     L[4] = L[4] - min24
-    res += L[2]//3*2
+    res += L[2] // 3 * 2
     L[2] = L[2] % 3
     min23 = min(L[2], L[3])
     res += min23
@@ -75,7 +75,7 @@ def combinations_increment(CT):
 
 
 def pr159(n):
-    'Zalozene na: ciferny sucet sucinu sa rovna sucinu cifernych suctov'
+    "Zalozene na: ciferny sucet sucinu sa rovna sucinu cifernych suctov"
     P = primes.primes(n)
     D = primes.rangePrimeFactDecomposition(n)
     PSUM = {}
@@ -89,9 +89,8 @@ def pr159(n):
             DSC[compute_digit_sum(pf)] += D[i][pf]
 
         for dsc in DSC:
-            res += dsc*DSC[dsc]
+            res += dsc * DSC[dsc]
 
         res += combinations_increment(DSC)
 
     return res
-

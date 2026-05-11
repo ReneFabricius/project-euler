@@ -1,8 +1,7 @@
 from itertools import combinations
-from math import ceil
 
 # Zakomentovana cast kodu je nepouzitelne pomala, ale su v nej veci ktore mozno niekedy pouzijem
-'''
+"""
 def testWays(n):
     W = {}
     def waysToSum(nn):
@@ -131,34 +130,34 @@ def problem103(n):
     
     return mS
 
-'''
+"""
 
 
 def problem103Checking(n):
     CTl = [[], [], [], []]
-    
+
     def findControllableFor(n):
         d = range(n)
         S = set(d)
         CT = []
-        for cl in range(2, n//2 + 1):
+        for cl in range(2, n // 2 + 1):
             for fc in combinations(d, cl):
                 fcl = sorted(list(fc))
                 for sc in combinations(S - set(fc), cl):
                     scl = sorted(list(sc))
                     if fcl[0] > scl[0]:
                         continue
-                    
+
                     for i in range(1, cl):
                         if fcl[i] > scl[i]:
                             CT += [(fcl, scl)]
                             break
-        
+
         return CT
-    
+
     for sl in range(4, n + 1):
         CTl += [findControllableFor(sl)]
-    
+
     def isValidSet(S):
         SL = sorted(list(S))
         for sp in CTl[len(S)]:
@@ -166,12 +165,12 @@ def problem103Checking(n):
             sss = sum([SL[ssi] for ssi in sp[1]])
             if fss == sss:
                 return False
-        
+
         return True
-    
+
     mS = set([1, 2])
     mSs = 3
-    
+
     def findNext(aS, dl):
         nonlocal mS
         nonlocal mSs
@@ -180,36 +179,35 @@ def problem103Checking(n):
                 mS = aS
                 mSs = sum(aS)
             return
-        
+
         if sum(aS) >= mSs:
             return
-            
-        mx = int((mSs - sum(aS))/(dl - len(aS)) + (dl - len(aS) - 1)/2) - 1
+
+        mx = int((mSs - sum(aS)) / (dl - len(aS)) + (dl - len(aS) - 1) / 2) - 1
         SL = sorted(list(aS))
         if len(aS) >= 2:
             mst = mx
-            for k in range(2, (len(aS) + 2)//2 + 1):
-                amst = sum(SL[:k]) - sum(SL[-1:1-k:-1]) - 1
+            for k in range(2, (len(aS) + 2) // 2 + 1):
+                amst = sum(SL[:k]) - sum(SL[-1 : 1 - k : -1]) - 1
                 if amst < mst:
                     mst = amst
-            
+
             if mx > mst:
                 mx = mst
         if not SL:
             SL = [1]
-            
+
         for ne in range(SL[-1] + 1, mx + 1):
             if ne + sum(aS) >= mSs:
                 break
             if ne not in aS and isValidSet(aS | set([ne])):
                 findNext(set(aS) | set([ne]), dl)
-        
-    
+
     for sl in range(3, n + 1):
         mSL = sorted(list(mS))
-        me = mSL[len(mSL)//2]
+        me = mSL[len(mSL) // 2]
         mS = set([me] + [x + me for x in mSL])
         mSs = sum(mS)
         findNext(set(), sl)
-    
+
     return mS

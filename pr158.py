@@ -1,6 +1,7 @@
 from math import factorial
 from itertools import permutations
 
+
 def fun_p(p):
     n = 26
     nom = factorial(n) * (2**p - 2 - (p - 1))
@@ -8,6 +9,7 @@ def fun_p(p):
     res = nom // denom
 
     return res
+
 
 def fun_p_brute(p):
     n = 26

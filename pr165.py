@@ -1,15 +1,13 @@
-
-
 def true_intersect(A, B, C, D):
-    den = (D[0] - C[0])*(B[1] - A[1]) - (D[1] - C[1])*(B[0] - A[0])
+    den = (D[0] - C[0]) * (B[1] - A[1]) - (D[1] - C[1]) * (B[0] - A[0])
     if den == 0:
         return None
 
-    inom = (D[0] - C[0])*(C[1] - A[1]) - (C[0] - A[0])*(D[1] - C[1])
-    jnom = (C[1] - A[1])*(B[0] - A[0]) - (B[1] - A[1])*(C[0] - A[0])
+    inom = (D[0] - C[0]) * (C[1] - A[1]) - (C[0] - A[0]) * (D[1] - C[1])
+    jnom = (C[1] - A[1]) * (B[0] - A[0]) - (B[1] - A[1]) * (C[0] - A[0])
 
-    i = inom/den
-    j = jnom/den
+    i = inom / den
+    j = jnom / den
 
     if i <= 0 or i >= 1 or j <= 0 or j >= 1:
         return None
@@ -19,24 +17,24 @@ def true_intersect(A, B, C, D):
         inom = -inom
         jnom = -jnom
 
-    Xn = C[0]*den + jnom*(D[0] - C[0])
-    Yn = C[1]*den + jnom*(D[1] - C[1])
+    Xn = C[0] * den + jnom * (D[0] - C[0])
+    Yn = C[1] * den + jnom * (D[1] - C[1])
 
     gcdX = gcd(Xn, den)
     gcdY = gcd(Yn, den)
 
-    return ((Xn/gcdX, den/gcdX), (Yn/gcdY, den/gcdY))
+    return ((Xn / gcdX, den / gcdX), (Yn / gcdY, den / gcdY))
 
 
 def BBS(S, M, m, l):
     for i in range(l):
-        S = (S*S) % M
+        S = (S * S) % M
         yield S % m
 
 
 def get_lines(n):
-    L = [t for t in BBS(290797, 50515093, 500, n*4)]
-    R = [((L[i], L[i+1]), (L[i+2], L[i+3])) for i in range(0, len(L), 4)]
+    L = [t for t in BBS(290797, 50515093, 500, n * 4)]
+    R = [((L[i], L[i + 1]), (L[i + 2], L[i + 3])) for i in range(0, len(L), 4)]
     return R
 
 

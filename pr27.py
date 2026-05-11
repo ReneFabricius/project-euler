@@ -1,5 +1,6 @@
 from primes import primes, isPrime
 
+
 def quadPrimProd():
     P = primes(500000)
     B = primes(1000)
@@ -11,16 +12,17 @@ def quadPrimProd():
             n = 0
             c = True
             while c:
-                p = n*n + a*n + b
+                p = n * n + a * n + b
                 if (p < 2) or (p not in P):
                     c = False
                 n += 1
-            if (n - 1 > m):
+            if n - 1 > m:
                 m = n - 1
                 mb = b
                 ma = a
-   
-    return m, ma, mb, ma*mb         
+
+    return m, ma, mb, ma * mb
+
 
 def quadPrimProdCheck():
     B = primes(1000)
@@ -32,14 +34,14 @@ def quadPrimProdCheck():
             n = 0
             c = True
             while c:
-                p = n*n + a*n + b
-                if (not isPrime(p)):
+                p = n * n + a * n + b
+                if not isPrime(p):
                     c = False
                 n += 1
-                
-            if (n - 1 > m):
+
+            if n - 1 > m:
                 m = n - 1
                 mb = b
                 ma = a
-   
-    return m, ma, mb, ma*mb        
+
+    return m, ma, mb, ma * mb
