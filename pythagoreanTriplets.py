@@ -9,10 +9,10 @@ def EuklidsFormPeriNG(l):
     nl = int((-3 + sqrt(1 + 4 * l)) / 4)
     primes.initGlobalPrimes(int(sqrt((-1 + sqrt(1 + 2 * l)) / 2)))
     for n in range(1, nl + 1):
-        nD = set(primes.primeFactDecompPreinitialized(n))
+        nD = set(primes.prime_fact_decomp_preinitialized(n))
         ml = int((-n + sqrt(n * n + 2 * l)) / 2)
         for m in range(n + 1, ml + 1, 2):
-            mD = set(primes.primeFactDecompPreinitialized(m))
+            mD = set(primes.prime_fact_decomp_preinitialized(m))
             if len(nD.intersection(mD)) == 0:
                 a = m * m - n * n
                 b = 2 * m * n

@@ -12,10 +12,10 @@ def problem47(c):
             l *= 10
             primes.initGlobalPrimes(sqrt(l))
 
-        if len(primes.primeFactDecompPreinitialized(n)) == c:
+        if len(primes.prime_fact_decomp_preinitialized(n)) == c:
             p = True
             for d in range(1, c):
-                if len(primes.primeFactDecompPreinitialized(n + d)) != c:
+                if len(primes.prime_fact_decomp_preinitialized(n + d)) != c:
                     n += d
                     p = False
                     break

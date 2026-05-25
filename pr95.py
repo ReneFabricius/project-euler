@@ -4,7 +4,7 @@ import primes
 
 def sumOfPropDvisors(n):
     "Najde sucet delitelov cisla n mensich ako n"
-    D = primes.primeFactDecompPreinitialized(n)
+    D = primes.prime_fact_decomp_preinitialized(n)
     s = 1
     for p in D:
         s *= (p ** (D[p] + 1) - 1) // (p - 1)

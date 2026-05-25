@@ -1,7 +1,8 @@
-from math import sqrt, log, ceil
+from math import sqrt, log, ceil, prod
 from functools import reduce
 from random import seed, randrange
 from collections import Counter
+from itertools import product
 
 
 def pw_prod(L):
@@ -84,27 +85,59 @@ def prime_fact_decomp(n):
     return F  # Nevieme urcit, ci n je prvocislo
 
 
-def primeFactDecompPreinitialized(n):
-    "Najde prvociselny rozklad cisla s pomocou vopred inicializovaneho zoznamu prvocisel (minimalne po sqrt(n))"
+def prime_fact_decomp_preinitialized(n, P):
+    """
+    Find prime decomposition of n using a pre-initialized set of primes.
+    Raises ValueError if not enough primes are preinitialized.
+    """
     F = Counter()
     if n == 1:
         F[1] += 1
         return F
 
-    a = int(sqrt(n))
+    last_r = sqrt(n)
+    broke = False
 
-    for p in Pg:
+    for p in P:
+        dived = False
         while n % p == 0:
-            n = n / p
+            n = n // p
+            dived = True
             F[p] += 1
         if n == 1:
             return F
-        if p > a:
+        if dived:
+            last_r = sqrt(n)
+        if p > last_r:
+            broke = True
             break
 
+    if not broke:
+        raise ValueError(
+            f"Not enough primes preinitialized, n remainder: {n}, largest prime: {P[-1]}"
+        )
     F[int(n)] += 1
 
     return F
+
+
+def divisors_from_decomp(F: dict[int, int]):
+    """
+    Find all divisors using a prime factor decomposition of a number.
+
+    Args:
+        F (dict[int, int]): Prime factor decomposition with
+            keys primes and values exponents.
+    """
+    F.pop(1, 1)
+    ps = list(F.keys())
+    exs = [F[p] for p in ps]
+    exs_choices = [list(range(e + 1)) for e in exs]
+    divs = []
+    for div_exs in product(*exs_choices):
+        divs.append(prod([ps[i] ** div_exs[i] for i in range(len(ps))]))
+
+    return divs
 
 
 def divisorsNumber(n):
@@ -120,7 +153,7 @@ def divisorsNumber(n):
 
 def divisorsNumberPreinitialized(n):
     "Najde pocet delitelov cisla"
-    P = primeFactDecompPreinitialized(n)
+    P = prime_fact_decomp_preinitialized(n)
     P = Counter(P)
     d = 1
     for p in P:
@@ -228,7 +261,7 @@ def totient(n):
 
 def totientPreinitialized(n):
     "Spocita Eulerovu funkciu argumentu, nutne mat preinicializovane prvocisla minimalne do sqrt(n)"
-    P = primeFactDecompPreinitialized(n)
+    P = prime_fact_decomp_preinitialized(n)
     P = set(P)
     t = n * pw_prod([(1 - 1 / p) for p in P])
     return int(round(t))
@@ -305,7 +338,7 @@ def comp_factors(n):
         DCs += [None] * (n + 1 - len(DCs))
 
     if DCs[n] is None:
-        DCs[n] = primeFactDecompPreinitialized(n)
+        DCs[n] = prime_fact_decomp_preinitialized(n)
 
     if Factors[n] is None:
         if n == 1:
@@ -371,7 +404,7 @@ def all_decompositions_preinitialized_initializing(n):
         DCs += [None] * (n + 1 - len(DCs))
 
     if DCs[n] is None:
-        DCs[n] = primeFactDecompPreinitialized(n)
+        DCs[n] = prime_fact_decomp_preinitialized(n)
 
     e_sum = 0
     for p in DCs[n]:

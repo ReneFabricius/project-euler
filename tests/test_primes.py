@@ -1,6 +1,12 @@
 import pytest
 from collections import Counter
-from primes import prime_fact_decomp
+from primes import (
+    prime_fact_decomp,
+    prime_fact_decomp_preinitialized,
+    findDivisors,
+    divisors_from_decomp,
+    primes,
+)
 
 
 @pytest.mark.parametrize(
@@ -68,3 +74,39 @@ from primes import prime_fact_decomp
 def test_prime_fact_decomp(n, exp_decomp):
     decomp = prime_fact_decomp(n)
     assert decomp == exp_decomp
+
+
+@pytest.mark.parametrize(
+    "n, p_lim, exc",
+    [
+        (1254658, 10, True),
+        (2**5 * 7**8 * 17**19, 25, False),
+        (10000000017, 10**5 + 20, False),
+    ],
+)
+def test_prime_fact_decomp_preinitialized(n, p_lim, exc):
+    P = primes(p_lim)
+    if exc:
+        with pytest.raises(ValueError):
+            prime_fact_decomp_preinitialized(n=n, P=P)
+    else:
+        dec_p = prime_fact_decomp_preinitialized(n=n, P=P)
+        dec_b = prime_fact_decomp(n=n)
+        assert dec_p == dec_b
+
+
+@pytest.mark.parametrize(
+    "n",
+    [
+        10,
+        152,
+        2654875,
+        32564587,
+        25556544,
+    ],
+)
+def test_divisors_from_decomp(n):
+    dec = prime_fact_decomp(n=n)
+    divs = sorted(divisors_from_decomp(F=dec))
+    divs_b = findDivisors(n)
+    assert divs == divs_b

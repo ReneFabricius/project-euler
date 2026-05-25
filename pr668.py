@@ -8,7 +8,7 @@ def pr668_brute_force(n):
         if (i >> 20) << 20 == i:
             print(i)
 
-        F = primes.primeFactDecompPreinitialized(i)
+        F = primes.prime_fact_decomp_preinitialized(i)
         FKL = list(F.keys())
         if FKL[-1] * FKL[-1] < i:
             count += 1

@@ -8,7 +8,7 @@ def factDivs(m):
     primes.initGlobalPrimes(int(sqrt(m)) + 1)
     C = Counter()
     for k in range(1, m + 1):
-        C += primes.primeFactDecompPreinitialized(k)
+        C += primes.prime_fact_decomp_preinitialized(k)
 
     divs = 1
     for p in C:
@@ -21,7 +21,7 @@ def countDivs10n(n):
     primes.initGlobalPrimes(int(sqrt(10**n)) + 1)
     s = 1
     for i in range(2, 10**n + 1):
-        f = primes.primeFactDecompPreinitialized(i)
+        f = primes.prime_fact_decomp_preinitialized(i)
         cd = 1
         for p in f:
             cd *= f[p] + 1
@@ -51,11 +51,11 @@ def BF(m, n):
     primes.initGlobalPrimes(int(sqrt(n)) + 1)
     D_N = {1: Counter()}
     for i in range(2, n + 1):
-        D_N[i] = primes.primeFactDecompPreinitialized(i)
+        D_N[i] = primes.prime_fact_decomp_preinitialized(i)
 
     F_D = Counter()
     for f in range(2, m + 1):
-        F_D += primes.primeFactDecompPreinitialized(f)
+        F_D += primes.prime_fact_decomp_preinitialized(f)
 
     res = 0
     DIV_C = []
@@ -87,7 +87,7 @@ def onlyMult(m, n):
     primes.initGlobalPrimes(int(sqrt(m)) + 1)
     F_D = Counter()
     for f in range(2, m + 1):
-        F_D += primes.primeFactDecompPreinitialized(f)
+        F_D += primes.prime_fact_decomp_preinitialized(f)
 
     DIV_C = []
 

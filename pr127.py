@@ -7,7 +7,7 @@ primes.initGlobalPrimes(60000)
 
 @lru_cache(maxsize=None)
 def rad(n):
-    decomp = primes.primeFactDecompPreinitialized(n)
+    decomp = primes.prime_fact_decomp_preinitialized(n)
     r = reduce(lambda a, b: a * b, decomp.keys())
     return r
 

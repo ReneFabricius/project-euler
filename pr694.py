@@ -24,7 +24,7 @@ def pr694(l):
 
 
 def count_c_full_divs(n):
-    D = primes.primeFactDecompPreinitialized(n)
+    D = primes.prime_fact_decomp_preinitialized(n)
     res = 1
     for p in D:
         if D[p] >= 3:

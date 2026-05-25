@@ -9,7 +9,7 @@ def test_decomposition(l):
     primes.initGlobalPrimes(int(math.sqrt(l)) + 1)
     D = [None]
     for i in range(1, l):
-        D.append(primes.primeFactDecompPreinitialized(i))
+        D.append(primes.prime_fact_decomp_preinitialized(i))
 
     end_oao = time()
     print("Time one after one: " + str(end_oao - start_oao))
