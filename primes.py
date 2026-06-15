@@ -254,9 +254,8 @@ def primesRang(m, n):
 def totient(n):
     "Spocita Eulerovu funkciu argumentu"
     P = prime_fact_decomp(n)
-    P = set(P)
-    t = n * pw_prod([(1 - 1 / p) for p in P])
-    return int(round(t))
+    tot = prod([p ** (e - 1) * (p - 1) for p, e in P.items()])
+    return tot
 
 
 def totientPreinitialized(n):
