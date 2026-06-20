@@ -253,17 +253,16 @@ def primesRang(m, n):
 
 def totient(n):
     "Spocita Eulerovu funkciu argumentu"
-    P = prime_fact_decomp(n)
-    tot = prod([p ** (e - 1) * (p - 1) for p, e in P.items()])
+    decomp = prime_fact_decomp(n)
+    tot = prod([p ** (e - 1) * (p - 1) for p, e in decomp.items()])
     return tot
 
 
-def totientPreinitialized(n):
+def totient_preinitialized(n, P):
     "Spocita Eulerovu funkciu argumentu, nutne mat preinicializovane prvocisla minimalne do sqrt(n)"
-    P = prime_fact_decomp_preinitialized(n)
-    P = set(P)
-    t = n * pw_prod([(1 - 1 / p) for p in P])
-    return int(round(t))
+    decomp = prime_fact_decomp_preinitialized(n, P)
+    tot = prod([p ** (e - 1) * (p - 1) for p, e in decomp.items()])
+    return tot
 
 
 def isN_smooth(a, N):
