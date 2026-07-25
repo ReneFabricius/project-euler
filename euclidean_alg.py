@@ -1,3 +1,6 @@
+from math import gcd
+
+
 def ext_euclid(a, b):
     sw = False
     if a < b:
@@ -16,3 +19,8 @@ def ext_euclid(a, b):
         return (r[0], t[0], s[0])
 
     return (r[0], s[0], t[0])
+
+
+def lcm(a: int, b: int) -> int:
+    d = gcd(a, b)
+    return a // d * b
