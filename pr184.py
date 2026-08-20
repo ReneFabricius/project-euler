@@ -1,5 +1,11 @@
-from math import atan2, pi, sqrt, ceil, floor
-from bisect import bisect
+from mpmath import atan2, pi, sqrt, ceil, mp, degrees
+from bisect import bisect_right, bisect_left
+
+ROUND_DIGS = 10
+COUNT_DIGS = 50
+PI_DEG = 180.0
+
+mp.dps = COUNT_DIGS
 
 
 def circle_points(r: int) -> list[tuple[int, int]]:
@@ -20,10 +26,12 @@ def ring_points(r: int) -> list[tuple[int, int, float]]:
     r2 = r * r
     for x in range(1, r):
         x2 = x * x
-        for y in range(ceil(sqrt(rp2 - x2)), ceil(sqrt(r2 - x2))):
+        for y in range(int(ceil(sqrt(rp2 - x2))), int(ceil(sqrt(r2 - x2)))):
             cx, cy = x, y
             for _ in range(4):
-                points.append((cx, cy, atan2(cy, cx) % (2 * pi)))
+                points.append(
+                    (cx, cy, round(degrees(atan2(cy, cx) % (2 * pi)), ROUND_DIGS))
+                )
                 cx, cy = -cy, cx
 
     points = sorted(points, key=lambda pt: pt[2])
@@ -68,11 +76,14 @@ def pr184_naive(r):
         triangs += len(three_on_ring)
 
         two_on_ring = []
+        two_on_ring_fq = []
         for f_i, f in enumerate(ring_pts):
             for s in ring_pts[f_i + 1 :]:
                 for t in circle_points:
                     if center_inside(f, s, t):
                         two_on_ring.append((f[:2], s[:2], t[:2]))
+                        if f[0] > 0 and f[1] >= 0 and f[2] < s[2] < f[2] + PI_DEG:
+                            two_on_ring_fq.append((f, s, t))
 
         print(f"Two: {len(two_on_ring)}")
         triangs += len(two_on_ring)
@@ -84,8 +95,11 @@ def pr184_naive(r):
                 for t in circle_points[s_i + 1 :]:
                     if center_inside(f, s, t):
                         one_on_ring.append((f[:2], s[:2], t[:2]))
-                        if f[0] > 0 and f[1] >= 0 and s[2] < f[2] + pi:
-                            one_on_ring_fq.append((f[:2], s[:2], t[:2]))
+                        if f[0] > 0 and f[1] >= 0:
+                            if f[2] < s[2] < f[2] + PI_DEG:
+                                one_on_ring_fq.append((f, s, t))
+                            else:
+                                one_on_ring_fq.append((f, t, s))
 
         print(f"One: {len(one_on_ring)}")
         triangs += len(one_on_ring)
@@ -93,7 +107,7 @@ def pr184_naive(r):
         circle_points.extend(ring_pts)
         circle_points = sorted(circle_points, key=lambda pt: pt[2])
 
-    return triangs
+    return triangs, two_on_ring_fq, one_on_ring_fq
 
 
 def pr184(r):
@@ -111,6 +125,7 @@ def pr184(r):
 
         # two on ring
         two_on_ring = 0
+        # two_on_ring_fq = []
         for f_i, first in enumerate(ring_pts):
             if first[0] == 0:
                 break
@@ -118,25 +133,32 @@ def pr184(r):
                 if second[0] == -first[0] and second[1] == -first[1]:
                     break
 
-                if second[0] > 0:
-                    x_end = -1
-                elif second[1] > 0:
-                    x_end = -second[0] - 1
-                else:
-                    x_end = ring - 2
+                third_from = bisect_right(
+                    circle_points,
+                    round(first[2] + PI_DEG, ROUND_DIGS),
+                    key=lambda pt: pt[2],
+                )
+                third_to = bisect_left(
+                    circle_points,
+                    round(second[2] + PI_DEG, ROUND_DIGS),
+                    key=lambda pt: pt[2],
+                )
 
-                for x in range(-first[0] + 1, x_end + 1):
-                    cands = [floor(-sqrt(rp2 - x * x)) + 1]
-                    if second[0] > 0:
-                        cands.append(floor(x * (second[1] / second[0])) + 1)
-                    y_start = max(cands)
+                two_on_ring += third_to - third_from
 
-                    if x <= 0:
-                        y_end = ceil(x * first[1] / first[0]) - 1
-                    else:
-                        y_end = ceil(x * second[1] / second[0]) - 1
+                # for third in circle_points[third_from:third_to]:
+                # two_on_ring_fq.append((first, second, third))
 
-                    two_on_ring += y_end - y_start + 1
+                if second[2] + PI_DEG > 2 * PI_DEG:
+                    overflow_to = bisect_left(
+                        circle_points,
+                        round((second[2] + PI_DEG) % (2 * PI_DEG), ROUND_DIGS),
+                        key=lambda pt: pt[2],
+                    )
+                    two_on_ring += overflow_to
+
+                    # for third in circle_points[:overflow_to]:
+                    # two_on_ring_fq.append((first, second, third))
 
         print(f"Two: {4 * two_on_ring}")
         triangs += 4 * two_on_ring
@@ -147,40 +169,37 @@ def pr184(r):
         for first in ring_pts:
             if first[0] == 0:
                 break
-            s_i = bisect(circle_points, first[2], key=lambda pt: pt[2])
+            s_i = bisect_right(circle_points, first[2], key=lambda pt: pt[2])
             for second in circle_points[s_i:]:
-                if second[2] >= first[2] + pi:
+                if second[2] >= round(first[2] + PI_DEG, ROUND_DIGS):
                     break
 
-                if second[0] > 0:
-                    x_end = -1
-                elif second[1] > 0:
-                    x_end = (
-                        ceil(
-                            sqrt(
-                                rp2 * second[0] ** 2 / (second[0] ** 2 + second[1] ** 2)
-                            )
-                        )
-                        - 1
+                third_from = bisect_right(
+                    circle_points,
+                    round(first[2] + PI_DEG, ROUND_DIGS),
+                    key=lambda pt: pt[2],
+                )
+                third_to = bisect_left(
+                    circle_points,
+                    round(second[2] + PI_DEG, ROUND_DIGS),
+                    key=lambda pt: pt[2],
+                )
+
+                one_on_ring += third_to - third_from
+
+                # for third in circle_points[third_from:third_to]:
+                # one_on_ring_fq.append((first, second, third))
+
+                if second[2] + PI_DEG > 2 * PI_DEG:
+                    overflow_to = bisect_left(
+                        circle_points,
+                        round((second[2] + PI_DEG) % (2 * PI_DEG), ROUND_DIGS),
+                        key=lambda pt: pt[2],
                     )
-                else:
-                    x_end = ring - 2
+                    one_on_ring += overflow_to
 
-                for x in range(-first[0] + 1, x_end + 1):
-                    cands = [floor(-sqrt(rp2 - x * x)) + 1]
-                    if second[0] > 0:
-                        cands.append(floor(x * (second[1] / second[0])) + 1)
-                    y_start = max(cands)
-
-                    if x <= 0:
-                        y_end = ceil(x * first[1] / first[0]) - 1
-                    else:
-                        y_end = ceil(x * second[1] / second[0]) - 1
-
-                    # for y in range(y_start, y_end + 1):
-                    #    one_on_ring_fq.append((first[:2], second[:2], (x, y)))
-
-                    one_on_ring += y_end - y_start + 1
+                    # for third in circle_points[:overflow_to]:
+                    # one_on_ring_fq.append((first, second, third))
 
         print(f"One: {4 * one_on_ring}")
         triangs += 4 * one_on_ring
@@ -188,7 +207,7 @@ def pr184(r):
         circle_points.extend(ring_pts)
         circle_points = sorted(circle_points, key=lambda pt: pt[2])
 
-    return triangs
+    return triangs  # , two_on_ring_fq, one_on_ring_fq
 
 
 if __name__ == "__main__":
